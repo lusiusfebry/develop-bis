@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import { createMasterRouter } from './master.routes';
 import karyawanRouter from './karyawan.routes';
+import { importRouter, exportRouter } from './import-export.routes';
 import {
     divisiConfig,
     departmentConfig,
@@ -15,6 +16,11 @@ import {
 } from '../dto/master.dto';
 
 const router = Router();
+
+// ── Mount Import/Export Router ─────────────────────────────────────
+
+router.use('/import', importRouter);
+router.use('/export', exportRouter);
 
 // ── Mount Karyawan Router ──────────────────────────────────────────
 

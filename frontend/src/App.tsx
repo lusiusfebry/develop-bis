@@ -1,12 +1,33 @@
-function App() {
-  return (
-    <div className="min-h-screen flex items-center justify-center bg-neutral-950 text-white">
-      <div className="text-center space-y-4">
-        <h1 className="text-5xl font-bold tracking-tight">BIS App</h1>
-        <p className="text-lg text-neutral-400">Coming Soon</p>
-      </div>
-    </div>
-  )
+import { Routes, Route, Navigate } from 'react-router-dom';
+import { authService } from '@/services/auth.service';
+import LoginPage from '@/pages/auth/LoginPage';
+import WelcomePage from '@/pages/welcome/WelcomePage';
+
+function ProtectedRoute({ children }: { children: React.ReactNode }) {
+  const token = authService.getToken();
+
+  if (!token) {
+    return <Navigate to="/login" replace />;
+  }
+
+  return <>{children}</>;
 }
 
-export default App
+function App() {
+  return (
+    <Routes>
+      <Route path="/login" element={<LoginPage />} />
+      <Route
+        path="/"
+        element={
+          <ProtectedRoute>
+            <WelcomePage />
+          </ProtectedRoute>
+        }
+      />
+      <Route path="*" element={<Navigate to="/" replace />} />
+    </Routes>
+  );
+}
+
+export default App;

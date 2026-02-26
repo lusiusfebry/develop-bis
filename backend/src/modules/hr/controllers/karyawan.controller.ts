@@ -12,9 +12,14 @@ import {
 
 export async function list(req: Request, res: Response, next: NextFunction) {
     try {
+        const rawPage = Number(req.query.page);
+        const rawLimit = Number(req.query.limit);
+        const page = isNaN(rawPage) || rawPage < 1 ? 1 : rawPage;
+        const limit = isNaN(rawLimit) || rawLimit < 1 ? 10 : rawLimit;
+
         const query = {
-            page: req.query.page ? Number(req.query.page) : undefined,
-            limit: req.query.limit ? Number(req.query.limit) : undefined,
+            page,
+            limit,
             search: req.query.search as string | undefined,
             divisi_id: req.query.divisi_id as string | undefined,
             department_id: req.query.department_id as string | undefined,

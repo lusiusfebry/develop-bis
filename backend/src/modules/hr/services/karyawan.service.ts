@@ -178,13 +178,7 @@ export async function createKaryawan(data: CreateKaryawanInput) {
         throw error;
     }
 
-    // Validasi jumlah anak dan saudara kandung
-    if (data.anak && data.anak.length > 4) {
-        const error: any = new Error('Jumlah anak maksimal 4');
-        error.status = 400;
-        throw error;
-    }
-
+    // Validasi jumlah saudara kandung
     if (data.saudara_kandung && data.saudara_kandung.length > 5) {
         const error: any = new Error('Jumlah saudara kandung maksimal 5');
         error.status = 400;
@@ -247,13 +241,7 @@ export async function updateKaryawan(id: string, data: UpdateKaryawanInput) {
     // Konversi field tanggal
     const convertedData = convertDateFields(karyawanData as Record<string, any>);
 
-    // Validasi jumlah anak dan saudara kandung
-    if (anak && anak.length > 4) {
-        const error: any = new Error('Jumlah anak maksimal 4');
-        error.status = 400;
-        throw error;
-    }
-
+    // Validasi jumlah saudara kandung
     if (saudara_kandung && saudara_kandung.length > 5) {
         const error: any = new Error('Jumlah saudara kandung maksimal 5');
         error.status = 400;
