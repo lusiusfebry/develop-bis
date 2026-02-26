@@ -16,6 +16,10 @@ import TagPage from '@/pages/hr/master/TagPage';
 import LokasiKerjaPage from '@/pages/hr/master/LokasiKerjaPage';
 import StatusKaryawanPage from '@/pages/hr/master/StatusKaryawanPage';
 
+// Karyawan Pages
+import KaryawanListPage from '@/pages/hr/karyawan/KaryawanListPage';
+import KaryawanDetailPage from '@/pages/hr/karyawan/KaryawanDetailPage';
+
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const token = authService.getToken();
 
@@ -92,6 +96,36 @@ function HRMasterLayout() {
   );
 }
 
+function HRKaryawanLayout() {
+  const { pathname } = window.location;
+  let breadcrumbs = [];
+
+  if (pathname.includes('/hr/karyawan/baru')) {
+    breadcrumbs = [
+      { label: 'HR', href: '/' },
+      { label: 'Karyawan', href: '/hr/karyawan' },
+      { label: 'Tambah Karyawan' },
+    ];
+  } else if (pathname !== '/hr/karyawan' && pathname.startsWith('/hr/karyawan/')) {
+    breadcrumbs = [
+      { label: 'HR', href: '/' },
+      { label: 'Karyawan', href: '/hr/karyawan' },
+      { label: 'Detail Karyawan' },
+    ];
+  } else {
+    breadcrumbs = [
+      { label: 'HR', href: '/' },
+      { label: 'Karyawan' },
+    ];
+  }
+
+  return (
+    <HRLayout breadcrumbs={breadcrumbs}>
+      <Outlet />
+    </HRLayout>
+  );
+}
+
 function App() {
   return (
     <Routes>
@@ -110,22 +144,29 @@ function App() {
         path="/hr/*"
         element={
           <ProtectedRoute>
-            <HRMasterLayout />
+            <Outlet />
           </ProtectedRoute>
         }
       >
-        {/* Master Data */}
-        <Route path="master" element={<Navigate to="/hr/master/divisi" replace />} />
-        <Route path="master/divisi" element={<DivisiPage />} />
-        <Route path="master/department" element={<DepartmentPage />} />
-        <Route path="master/posisi-jabatan" element={<PosisiJabatanPage />} />
-        <Route path="master/kategori-pangkat" element={<KategoriPangkatPage />} />
-        <Route path="master/golongan" element={<GolonganPage />} />
-        <Route path="master/sub-golongan" element={<SubGolonganPage />} />
-        <Route path="master/jenis-hubungan-kerja" element={<JenisHubunganKerjaPage />} />
-        <Route path="master/tag" element={<TagPage />} />
-        <Route path="master/lokasi-kerja" element={<LokasiKerjaPage />} />
-        <Route path="master/status-karyawan" element={<StatusKaryawanPage />} />
+        <Route path="master" element={<HRMasterLayout />}>
+          <Route index element={<Navigate to="/hr/master/divisi" replace />} />
+          <Route path="divisi" element={<DivisiPage />} />
+          <Route path="department" element={<DepartmentPage />} />
+          <Route path="posisi-jabatan" element={<PosisiJabatanPage />} />
+          <Route path="kategori-pangkat" element={<KategoriPangkatPage />} />
+          <Route path="golongan" element={<GolonganPage />} />
+          <Route path="sub-golongan" element={<SubGolonganPage />} />
+          <Route path="jenis-hubungan-kerja" element={<JenisHubunganKerjaPage />} />
+          <Route path="tag" element={<TagPage />} />
+          <Route path="lokasi-kerja" element={<LokasiKerjaPage />} />
+          <Route path="status-karyawan" element={<StatusKaryawanPage />} />
+        </Route>
+
+        <Route path="karyawan" element={<HRKaryawanLayout />}>
+          <Route index element={<KaryawanListPage />} />
+          <Route path="baru" element={<KaryawanDetailPage />} />
+          <Route path=":id" element={<KaryawanDetailPage />} />
+        </Route>
       </Route>
 
       <Route path="*" element={<Navigate to="/" replace />} />
