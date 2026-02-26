@@ -1,8 +1,18 @@
 import dotenv from 'dotenv';
 dotenv.config();
 
+// ── Startup Environment Check ──────────────────────────────────────
+if (!process.env.JWT_SECRET) {
+    throw new Error(
+        '❌ FATAL: Environment variable JWT_SECRET belum di-set. ' +
+        'Server tidak dapat berjalan tanpa JWT_SECRET. ' +
+        'Pastikan JWT_SECRET sudah dikonfigurasi di file .env atau environment variables.'
+    );
+}
+
 import express, { Request, Response, NextFunction } from 'express';
 import cors from 'cors';
+import authRoutes from './modules/auth/auth.routes';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -16,6 +26,9 @@ app.use(express.urlencoded({ extended: true }));
 app.get('/api/health', (_req: Request, res: Response) => {
     res.json({ status: 'ok', timestamp: new Date() });
 });
+
+// ── Auth Routes ────────────────────────────────────────────────────
+app.use('/api/auth', authRoutes);
 
 // ── Global Error Handler ───────────────────────────────────────────
 interface AppError extends Error {
