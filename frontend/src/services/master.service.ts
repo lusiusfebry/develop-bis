@@ -14,6 +14,8 @@ function createMasterService<T>(endpoint: string) {
             if (query.limit) params.append('limit', String(query.limit));
             if (query.search) params.append('search', query.search);
             if (query.status) params.append('status', query.status);
+            if (query.sortKey) params.append('sort', query.sortKey);
+            if (query.sortOrder) params.append('order', query.sortOrder);
 
             const { data } = await api.get(`/api/hr/${endpoint}?${params.toString()}`);
             return data;

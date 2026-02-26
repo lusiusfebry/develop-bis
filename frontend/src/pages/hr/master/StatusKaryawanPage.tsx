@@ -6,7 +6,7 @@ import MasterDataForm from '@/components/hr/master/MasterDataForm';
 import type { StatusKaryawan, FieldConfig } from '@/types/master.types';
 
 const columns = [
-    { key: 'nama_status', label: 'Nama Status' },
+    { key: 'nama_status', label: 'Nama Status', sortable: true },
 ];
 
 const formFields: FieldConfig[] = [
@@ -23,6 +23,9 @@ export default function StatusKaryawanPage() {
         setStatusFilter,
         page,
         setPage,
+        sortKey,
+        sortOrder,
+        handleSortChange,
         isFormOpen,
         setIsFormOpen,
         editingItem,
@@ -66,6 +69,9 @@ export default function StatusKaryawanPage() {
                 onPageChange={setPage}
                 onEdit={(row) => handleEdit(row as unknown as StatusKaryawan)}
                 onToggleStatus={(row) => handleToggleStatus(row as unknown as StatusKaryawan)}
+                sortKey={sortKey}
+                sortOrder={sortOrder}
+                onSortChange={handleSortChange}
             />
 
             <MasterDataForm

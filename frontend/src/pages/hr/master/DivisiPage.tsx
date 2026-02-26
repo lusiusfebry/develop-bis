@@ -6,7 +6,7 @@ import MasterDataForm from '@/components/hr/master/MasterDataForm';
 import type { Divisi, FieldConfig } from '@/types/master.types';
 
 const columns = [
-    { key: 'nama_divisi', label: 'Nama Divisi' },
+    { key: 'nama_divisi', label: 'Nama Divisi', sortable: true },
 ];
 
 const formFields: FieldConfig[] = [
@@ -23,6 +23,9 @@ export default function DivisiPage() {
         setStatusFilter,
         page,
         setPage,
+        sortKey,
+        sortOrder,
+        handleSortChange,
         isFormOpen,
         setIsFormOpen,
         editingItem,
@@ -68,6 +71,9 @@ export default function DivisiPage() {
                 onPageChange={setPage}
                 onEdit={(row) => handleEdit(row as unknown as Divisi)}
                 onToggleStatus={(row) => handleToggleStatus(row as unknown as Divisi)}
+                sortKey={sortKey}
+                sortOrder={sortOrder}
+                onSortChange={handleSortChange}
             />
 
             {/* Form Dialog */}

@@ -6,7 +6,7 @@ import MasterDataForm from '@/components/hr/master/MasterDataForm';
 import type { JenisHubunganKerja, FieldConfig } from '@/types/master.types';
 
 const columns = [
-    { key: 'nama_jenis_hubungan_kerja', label: 'Nama Jenis Hubungan Kerja' },
+    { key: 'nama_jenis_hubungan_kerja', label: 'Nama Jenis Hubungan Kerja', sortable: true },
 ];
 
 const formFields: FieldConfig[] = [
@@ -23,6 +23,9 @@ export default function JenisHubunganKerjaPage() {
         setStatusFilter,
         page,
         setPage,
+        sortKey,
+        sortOrder,
+        handleSortChange,
         isFormOpen,
         setIsFormOpen,
         editingItem,
@@ -66,6 +69,9 @@ export default function JenisHubunganKerjaPage() {
                 onPageChange={setPage}
                 onEdit={(row) => handleEdit(row as unknown as JenisHubunganKerja)}
                 onToggleStatus={(row) => handleToggleStatus(row as unknown as JenisHubunganKerja)}
+                sortKey={sortKey}
+                sortOrder={sortOrder}
+                onSortChange={handleSortChange}
             />
 
             <MasterDataForm

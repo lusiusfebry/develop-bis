@@ -7,7 +7,7 @@ import MasterDataForm from '@/components/hr/master/MasterDataForm';
 import type { Department, FieldConfig } from '@/types/master.types';
 
 const columns = [
-    { key: 'nama_department', label: 'Nama Department' },
+    { key: 'nama_department', label: 'Nama Department', sortable: true },
     {
         key: 'divisi',
         label: 'Divisi',
@@ -27,6 +27,9 @@ export default function DepartmentPage() {
         setStatusFilter,
         page,
         setPage,
+        sortKey,
+        sortOrder,
+        handleSortChange,
         isFormOpen,
         setIsFormOpen,
         editingItem,
@@ -88,6 +91,9 @@ export default function DepartmentPage() {
                 onPageChange={setPage}
                 onEdit={(row) => handleEdit(row as unknown as Department)}
                 onToggleStatus={(row) => handleToggleStatus(row as unknown as Department)}
+                sortKey={sortKey}
+                sortOrder={sortOrder}
+                onSortChange={handleSortChange}
             />
 
             <MasterDataForm

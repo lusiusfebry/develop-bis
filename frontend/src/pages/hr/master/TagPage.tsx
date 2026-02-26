@@ -6,7 +6,7 @@ import MasterDataForm from '@/components/hr/master/MasterDataForm';
 import type { Tag, FieldConfig } from '@/types/master.types';
 
 const columns = [
-    { key: 'nama_tag', label: 'Nama Tag' },
+    { key: 'nama_tag', label: 'Nama Tag', sortable: true },
     {
         key: 'warna_tag',
         label: 'Warna',
@@ -40,6 +40,9 @@ export default function TagPage() {
         setStatusFilter,
         page,
         setPage,
+        sortKey,
+        sortOrder,
+        handleSortChange,
         isFormOpen,
         setIsFormOpen,
         editingItem,
@@ -83,6 +86,9 @@ export default function TagPage() {
                 onPageChange={setPage}
                 onEdit={(row) => handleEdit(row as unknown as Tag)}
                 onToggleStatus={(row) => handleToggleStatus(row as unknown as Tag)}
+                sortKey={sortKey}
+                sortOrder={sortOrder}
+                onSortChange={handleSortChange}
             />
 
             <MasterDataForm

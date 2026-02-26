@@ -6,7 +6,7 @@ import MasterDataForm from '@/components/hr/master/MasterDataForm';
 import type { LokasiKerja, FieldConfig } from '@/types/master.types';
 
 const columns = [
-    { key: 'nama_lokasi_kerja', label: 'Nama Lokasi Kerja' },
+    { key: 'nama_lokasi_kerja', label: 'Nama Lokasi Kerja', sortable: true },
     {
         key: 'alamat',
         label: 'Alamat',
@@ -36,6 +36,9 @@ export default function LokasiKerjaPage() {
         setStatusFilter,
         page,
         setPage,
+        sortKey,
+        sortOrder,
+        handleSortChange,
         isFormOpen,
         setIsFormOpen,
         editingItem,
@@ -79,6 +82,9 @@ export default function LokasiKerjaPage() {
                 onPageChange={setPage}
                 onEdit={(row) => handleEdit(row as unknown as LokasiKerja)}
                 onToggleStatus={(row) => handleToggleStatus(row as unknown as LokasiKerja)}
+                sortKey={sortKey}
+                sortOrder={sortOrder}
+                onSortChange={handleSortChange}
             />
 
             <MasterDataForm

@@ -6,7 +6,7 @@ import MasterDataForm from '@/components/hr/master/MasterDataForm';
 import type { KategoriPangkat, FieldConfig } from '@/types/master.types';
 
 const columns = [
-    { key: 'nama_kategori_pangkat', label: 'Nama Kategori Pangkat' },
+    { key: 'nama_kategori_pangkat', label: 'Nama Kategori Pangkat', sortable: true },
 ];
 
 const formFields: FieldConfig[] = [
@@ -23,6 +23,9 @@ export default function KategoriPangkatPage() {
         setStatusFilter,
         page,
         setPage,
+        sortKey,
+        sortOrder,
+        handleSortChange,
         isFormOpen,
         setIsFormOpen,
         editingItem,
@@ -66,6 +69,9 @@ export default function KategoriPangkatPage() {
                 onPageChange={setPage}
                 onEdit={(row) => handleEdit(row as unknown as KategoriPangkat)}
                 onToggleStatus={(row) => handleToggleStatus(row as unknown as KategoriPangkat)}
+                sortKey={sortKey}
+                sortOrder={sortOrder}
+                onSortChange={handleSortChange}
             />
 
             <MasterDataForm

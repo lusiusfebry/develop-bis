@@ -3,6 +3,7 @@
 // ==========================================
 
 export type MasterStatus = 'Aktif' | 'TidakAktif';
+export type SortOrder = 'asc' | 'desc';
 
 // Interface dasar untuk semua entitas master
 export interface MasterBase {
@@ -68,6 +69,8 @@ export interface MasterListQuery {
     limit?: number;
     search?: string;
     status?: MasterStatus | '';
+    sortKey?: string;
+    sortOrder?: SortOrder;
 }
 
 export interface PaginatedResponse<T> {

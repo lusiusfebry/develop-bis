@@ -6,7 +6,7 @@ import MasterDataForm from '@/components/hr/master/MasterDataForm';
 import type { Golongan, FieldConfig } from '@/types/master.types';
 
 const columns = [
-    { key: 'nama_golongan', label: 'Nama Golongan' },
+    { key: 'nama_golongan', label: 'Nama Golongan', sortable: true },
 ];
 
 const formFields: FieldConfig[] = [
@@ -23,6 +23,9 @@ export default function GolonganPage() {
         setStatusFilter,
         page,
         setPage,
+        sortKey,
+        sortOrder,
+        handleSortChange,
         isFormOpen,
         setIsFormOpen,
         editingItem,
@@ -66,6 +69,9 @@ export default function GolonganPage() {
                 onPageChange={setPage}
                 onEdit={(row) => handleEdit(row as unknown as Golongan)}
                 onToggleStatus={(row) => handleToggleStatus(row as unknown as Golongan)}
+                sortKey={sortKey}
+                sortOrder={sortOrder}
+                onSortChange={handleSortChange}
             />
 
             <MasterDataForm

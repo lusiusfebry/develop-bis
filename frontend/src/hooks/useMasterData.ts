@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import type { MasterStatus, MasterListQuery, PaginatedResponse } from '@/types/master.types';
+import type { MasterStatus, MasterListQuery, PaginatedResponse, SortOrder } from '@/types/master.types';
 
 interface MasterService<T> {
     getList: (query: MasterListQuery) => Promise<PaginatedResponse<T>>;
@@ -21,14 +21,18 @@ export function useMasterData<T extends { id: string }>(
     const [page, setPage] = useState(1);
     const limit = 10;
 
+    // State untuk sorting
+    const [sortKey, setSortKey] = useState<string>('');
+    const [sortOrder, setSortOrder] = useState<SortOrder>('asc');
+
     // State untuk form
     const [isFormOpen, setIsFormOpen] = useState(false);
     const [editingItem, setEditingItem] = useState<T | null>(null);
 
     // Query list data
     const listQuery = useQuery({
-        queryKey: [...queryKey, { search, status: statusFilter, page, limit }],
-        queryFn: () => service.getList({ search, status: statusFilter, page, limit }),
+        queryKey: [...queryKey, { search, status: statusFilter, page, limit, sortKey, sortOrder }],
+        queryFn: () => service.getList({ search, status: statusFilter, page, limit, sortKey: sortKey || undefined, sortOrder: sortKey ? sortOrder : undefined }),
     });
 
     // Mutations
@@ -96,6 +100,19 @@ export function useMasterData<T extends { id: string }>(
         setPage(1);
     }, []);
 
+    // Handler untuk sorting — toggle asc/desc atau set key baru
+    const handleSortChange = useCallback((key: string) => {
+        setSortKey((prevKey) => {
+            if (prevKey === key) {
+                setSortOrder((prevOrder) => (prevOrder === 'asc' ? 'desc' : 'asc'));
+            } else {
+                setSortOrder('asc');
+            }
+            return key;
+        });
+        setPage(1);
+    }, []);
+
     return {
         // Query
         listQuery,
@@ -107,6 +124,11 @@ export function useMasterData<T extends { id: string }>(
         setStatusFilter: handleStatusFilterChange,
         page,
         setPage,
+
+        // Sorting
+        sortKey,
+        sortOrder,
+        handleSortChange,
 
         // Form
         isFormOpen,

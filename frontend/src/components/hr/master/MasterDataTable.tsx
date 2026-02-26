@@ -1,10 +1,11 @@
 import { useState, useEffect, type ReactNode } from 'react';
-import { Search, Pencil, ToggleLeft, ToggleRight, ChevronLeft, ChevronRight, Inbox } from 'lucide-react';
-import type { MasterStatus } from '@/types/master.types';
+import { Search, Pencil, ToggleLeft, ToggleRight, ChevronLeft, ChevronRight, ChevronUp, ChevronDown, ChevronsUpDown, Inbox } from 'lucide-react';
+import type { MasterStatus, SortOrder } from '@/types/master.types';
 
 export interface ColumnDef {
     key: string;
     label: string;
+    sortable?: boolean;
     render?: (row: Record<string, unknown>) => ReactNode;
 }
 
@@ -23,6 +24,9 @@ interface MasterDataTableProps {
     onPageChange: (page: number) => void;
     onEdit: (row: Record<string, unknown>) => void;
     onToggleStatus: (row: Record<string, unknown>) => void;
+    sortKey?: string;
+    sortOrder?: SortOrder;
+    onSortChange?: (key: string) => void;
 }
 
 export default function MasterDataTable({
@@ -40,6 +44,9 @@ export default function MasterDataTable({
     onPageChange,
     onEdit,
     onToggleStatus,
+    sortKey,
+    sortOrder,
+    onSortChange,
 }: MasterDataTableProps) {
     const [localSearch, setLocalSearch] = useState(search);
 
@@ -59,6 +66,18 @@ export default function MasterDataTable({
     const startRow = (page - 1) * limit + 1;
     const endRow = Math.min(page * limit, total);
 
+    // Render ikon sort pada header
+    const renderSortIcon = (colKey: string) => {
+        if (sortKey === colKey) {
+            return sortOrder === 'asc' ? (
+                <ChevronUp className="w-3.5 h-3.5 text-indigo-400" />
+            ) : (
+                <ChevronDown className="w-3.5 h-3.5 text-indigo-400" />
+            );
+        }
+        return <ChevronsUpDown className="w-3.5 h-3.5 text-neutral-600" />;
+    };
+
     // Kolom lengkap: kolom data + Status + Aksi
     const allColumns: ColumnDef[] = [
         ...columns,
@@ -70,8 +89,8 @@ export default function MasterDataTable({
                 return (
                     <span
                         className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium ${status === 'Aktif'
-                                ? 'bg-emerald-500/15 text-emerald-400 border border-emerald-500/20'
-                                : 'bg-red-500/15 text-red-400 border border-red-500/20'
+                            ? 'bg-emerald-500/15 text-emerald-400 border border-emerald-500/20'
+                            : 'bg-red-500/15 text-red-400 border border-red-500/20'
                             }`}
                     >
                         <span
@@ -109,8 +128,8 @@ export default function MasterDataTable({
                             }}
                             title={status === 'Aktif' ? 'Nonaktifkan' : 'Aktifkan'}
                             className={`p-2 rounded-lg transition-all duration-200 cursor-pointer ${status === 'Aktif'
-                                    ? 'text-emerald-400 hover:text-red-400 hover:bg-red-500/10'
-                                    : 'text-red-400 hover:text-emerald-400 hover:bg-emerald-500/10'
+                                ? 'text-emerald-400 hover:text-red-400 hover:bg-red-500/10'
+                                : 'text-red-400 hover:text-emerald-400 hover:bg-emerald-500/10'
                                 }`}
                         >
                             {status === 'Aktif' ? (
@@ -155,18 +174,35 @@ export default function MasterDataTable({
 
             {/* Table */}
             <div className="rounded-xl border border-white/5 overflow-hidden">
-                <div className="overflow-x-auto">
+                <div className="overflow-x-auto max-h-[65vh] overflow-y-auto">
                     <table className="w-full text-sm">
-                        <thead>
-                            <tr className="bg-[#0a0a0f]/90 backdrop-blur-sm border-b border-white/5">
-                                {allColumns.map((col) => (
-                                    <th
-                                        key={col.key}
-                                        className="px-4 py-3 text-left text-xs font-medium text-neutral-400 uppercase tracking-wider whitespace-nowrap"
-                                    >
-                                        {col.label}
-                                    </th>
-                                ))}
+                        <thead className="sticky top-0 z-10">
+                            <tr className="bg-[#0a0a0f] backdrop-blur-sm border-b border-white/5">
+                                {allColumns.map((col) => {
+                                    const isSortable = col.sortable !== false && !col.key.startsWith('_');
+                                    const isActive = sortKey === col.key;
+
+                                    return (
+                                        <th
+                                            key={col.key}
+                                            className={`px-4 py-3 text-left text-xs font-medium uppercase tracking-wider whitespace-nowrap ${isActive ? 'text-indigo-300' : 'text-neutral-400'
+                                                }`}
+                                        >
+                                            {isSortable && onSortChange ? (
+                                                <button
+                                                    type="button"
+                                                    onClick={() => onSortChange(col.key)}
+                                                    className="inline-flex items-center gap-1.5 hover:text-indigo-400 transition-colors duration-150 cursor-pointer"
+                                                >
+                                                    {col.label}
+                                                    {renderSortIcon(col.key)}
+                                                </button>
+                                            ) : (
+                                                col.label
+                                            )}
+                                        </th>
+                                    );
+                                })}
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-white/5">

@@ -6,7 +6,7 @@ import MasterDataForm from '@/components/hr/master/MasterDataForm';
 import type { SubGolongan, FieldConfig } from '@/types/master.types';
 
 const columns = [
-    { key: 'nama_sub_golongan', label: 'Nama Sub Golongan' },
+    { key: 'nama_sub_golongan', label: 'Nama Sub Golongan', sortable: true },
 ];
 
 const formFields: FieldConfig[] = [
@@ -23,6 +23,9 @@ export default function SubGolonganPage() {
         setStatusFilter,
         page,
         setPage,
+        sortKey,
+        sortOrder,
+        handleSortChange,
         isFormOpen,
         setIsFormOpen,
         editingItem,
@@ -66,6 +69,9 @@ export default function SubGolonganPage() {
                 onPageChange={setPage}
                 onEdit={(row) => handleEdit(row as unknown as SubGolongan)}
                 onToggleStatus={(row) => handleToggleStatus(row as unknown as SubGolongan)}
+                sortKey={sortKey}
+                sortOrder={sortOrder}
+                onSortChange={handleSortChange}
             />
 
             <MasterDataForm
