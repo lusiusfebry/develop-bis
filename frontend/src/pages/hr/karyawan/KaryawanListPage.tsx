@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { Search, Plus, Eye, Inbox, ChevronLeft, ChevronRight, User } from 'lucide-react';
+import { Combobox } from '@/components/ui/combobox';
 import { karyawanService } from '@/services/karyawan.service';
 import { divisiService, departmentService, statusKaryawanService } from '@/services/master.service';
 
@@ -106,40 +107,43 @@ export default function KaryawanListPage() {
                     </div>
 
                     {/* Divisi */}
-                    <select
-                        value={divisiId}
-                        onChange={(e) => { setDivisiId(e.target.value); setPage(1); }}
-                        className="w-full sm:w-auto px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-sm text-white focus:outline-none focus:border-indigo-500/50 transition-all duration-200 cursor-pointer"
-                    >
-                        <option value="" className="bg-[#0a0a0f]">Semua Divisi</option>
-                        {divisiList.map((d: { id: string; nama_divisi: string }) => (
-                            <option key={d.id} value={d.id} className="bg-[#0a0a0f]">{d.nama_divisi}</option>
-                        ))}
-                    </select>
+                    <div className="w-full sm:w-48">
+                        <Combobox
+                            value={divisiId}
+                            onChange={(val) => { setDivisiId(val); setPage(1); }}
+                            options={divisiList
+                                .filter((d: { status: string }) => d.status === 'Aktif')
+                                .map((d: { id: string; nama_divisi: string }) => ({ value: d.id, label: d.nama_divisi }))}
+                            placeholder="Semua Divisi"
+                            allowClear
+                        />
+                    </div>
 
                     {/* Department */}
-                    <select
-                        value={departmentId}
-                        onChange={(e) => { setDepartmentId(e.target.value); setPage(1); }}
-                        className="w-full sm:w-auto px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-sm text-white focus:outline-none focus:border-indigo-500/50 transition-all duration-200 cursor-pointer"
-                    >
-                        <option value="" className="bg-[#0a0a0f]">Semua Department</option>
-                        {departmentList.map((d: { id: string; nama_department: string }) => (
-                            <option key={d.id} value={d.id} className="bg-[#0a0a0f]">{d.nama_department}</option>
-                        ))}
-                    </select>
+                    <div className="w-full sm:w-48">
+                        <Combobox
+                            value={departmentId}
+                            onChange={(val) => { setDepartmentId(val); setPage(1); }}
+                            options={departmentList
+                                .filter((d: { status: string }) => d.status === 'Aktif')
+                                .map((d: { id: string; nama_department: string }) => ({ value: d.id, label: d.nama_department }))}
+                            placeholder="Semua Department"
+                            allowClear
+                        />
+                    </div>
 
                     {/* Status */}
-                    <select
-                        value={statusId}
-                        onChange={(e) => { setStatusId(e.target.value); setPage(1); }}
-                        className="w-full sm:w-auto px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-sm text-white focus:outline-none focus:border-indigo-500/50 transition-all duration-200 cursor-pointer"
-                    >
-                        <option value="" className="bg-[#0a0a0f]">Semua Status</option>
-                        {statusList.map((s: { id: string; nama_status: string }) => (
-                            <option key={s.id} value={s.id} className="bg-[#0a0a0f]">{s.nama_status}</option>
-                        ))}
-                    </select>
+                    <div className="w-full sm:w-48">
+                        <Combobox
+                            value={statusId}
+                            onChange={(val) => { setStatusId(val); setPage(1); }}
+                            options={statusList
+                                .filter((s: { status: string }) => s.status === 'Aktif')
+                                .map((s: { id: string; nama_status: string }) => ({ value: s.id, label: s.nama_status }))}
+                            placeholder="Semua Status"
+                            allowClear
+                        />
+                    </div>
                 </div>
 
                 {/* Table */}

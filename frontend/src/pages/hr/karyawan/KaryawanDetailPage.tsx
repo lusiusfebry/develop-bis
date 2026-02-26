@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { Tabs } from 'radix-ui';
+import * as Tabs from '@radix-ui/react-tabs';
 import QRCode from 'react-qr-code';
 import {
     Save, ArrowLeft, Camera, Trash2, Plus,

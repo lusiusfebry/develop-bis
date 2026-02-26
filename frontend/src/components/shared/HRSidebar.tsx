@@ -18,6 +18,8 @@ import {
     UserCheck,
     LayoutDashboard,
     Network,
+    Upload,
+    Download,
 } from 'lucide-react';
 
 interface NavItem {
@@ -39,9 +41,15 @@ const masterDataItems: NavItem[] = [
     { label: 'Status Karyawan', href: '/hr/master/status-karyawan', icon: UserCheck },
 ];
 
+const importExportItems: NavItem[] = [
+    { label: 'Import Data', href: '/hr/import-export/import', icon: Upload },
+    { label: 'Export Data', href: '/hr/import-export/export', icon: Download },
+];
+
 export default function HRSidebar() {
     const [isCollapsed, setIsCollapsed] = useState(false);
     const [isMasterOpen, setIsMasterOpen] = useState(true);
+    const [isImportExportOpen, setIsImportExportOpen] = useState(true);
     const location = useLocation();
     const navigate = useNavigate();
 
@@ -69,8 +77,8 @@ export default function HRSidebar() {
                 <button
                     onClick={() => navigate('/')}
                     className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm transition-all duration-200 cursor-pointer ${location.pathname === '/'
-                            ? 'bg-indigo-500/15 text-indigo-300 border border-indigo-500/20'
-                            : 'text-neutral-400 hover:text-white hover:bg-white/5 border border-transparent'
+                        ? 'bg-indigo-500/15 text-indigo-300 border border-indigo-500/20'
+                        : 'text-neutral-400 hover:text-white hover:bg-white/5 border border-transparent'
                         }`}
                 >
                     <LayoutDashboard className="w-4 h-4 shrink-0" />
@@ -89,8 +97,8 @@ export default function HRSidebar() {
                             }
                         }}
                         className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm transition-all duration-200 cursor-pointer ${isMasterActive
-                                ? 'bg-indigo-500/10 text-indigo-300'
-                                : 'text-neutral-400 hover:text-white hover:bg-white/5'
+                            ? 'bg-indigo-500/10 text-indigo-300'
+                            : 'text-neutral-400 hover:text-white hover:bg-white/5'
                             }`}
                     >
                         <Database className="w-4 h-4 shrink-0" />
@@ -114,8 +122,8 @@ export default function HRSidebar() {
                                         key={item.href}
                                         onClick={() => navigate(item.href)}
                                         className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg text-xs transition-all duration-200 cursor-pointer ${isActive(item.href)
-                                                ? 'bg-indigo-500/15 text-indigo-300 border border-indigo-500/20'
-                                                : 'text-neutral-500 hover:text-neutral-300 hover:bg-white/5 border border-transparent'
+                                            ? 'bg-indigo-500/15 text-indigo-300 border border-indigo-500/20'
+                                            : 'text-neutral-500 hover:text-neutral-300 hover:bg-white/5 border border-transparent'
                                             }`}
                                     >
                                         <Icon className="w-3.5 h-3.5 shrink-0" />
@@ -131,25 +139,63 @@ export default function HRSidebar() {
                 <button
                     onClick={() => navigate('/hr/karyawan')}
                     className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm transition-all duration-200 cursor-pointer ${location.pathname.startsWith('/hr/karyawan')
-                            ? 'bg-indigo-500/15 text-indigo-300 border border-indigo-500/20'
-                            : 'text-neutral-400 hover:text-white hover:bg-white/5 border border-transparent'
+                        ? 'bg-indigo-500/15 text-indigo-300 border border-indigo-500/20'
+                        : 'text-neutral-400 hover:text-white hover:bg-white/5 border border-transparent'
                         }`}
                 >
                     <Users className="w-4 h-4 shrink-0" />
                     {!isCollapsed && <span>Karyawan</span>}
                 </button>
 
-                {/* Import/Export */}
-                <button
-                    onClick={() => navigate('/hr/import-export')}
-                    className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm transition-all duration-200 cursor-pointer ${location.pathname.startsWith('/hr/import-export')
-                            ? 'bg-indigo-500/15 text-indigo-300 border border-indigo-500/20'
-                            : 'text-neutral-400 hover:text-white hover:bg-white/5 border border-transparent'
-                        }`}
-                >
-                    <FileSpreadsheet className="w-4 h-4 shrink-0" />
-                    {!isCollapsed && <span>Import / Export</span>}
-                </button>
+                {/* Import/Export Group */}
+                <div className="pt-2 border-t border-white/5 mt-2">
+                    <button
+                        onClick={() => {
+                            if (isCollapsed) {
+                                setIsCollapsed(false);
+                                setIsImportExportOpen(true);
+                            } else {
+                                setIsImportExportOpen(!isImportExportOpen);
+                            }
+                        }}
+                        className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm transition-all duration-200 cursor-pointer ${location.pathname.startsWith('/hr/import-export')
+                            ? 'bg-indigo-500/10 text-indigo-300'
+                            : 'text-neutral-400 hover:text-white hover:bg-white/5'
+                            }`}
+                    >
+                        <FileSpreadsheet className="w-4 h-4 shrink-0" />
+                        {!isCollapsed && (
+                            <>
+                                <span className="flex-1 text-left">Import / Export</span>
+                                <ChevronDown
+                                    className={`w-3.5 h-3.5 transition-transform duration-200 ${isImportExportOpen ? 'rotate-0' : '-rotate-90'
+                                        }`}
+                                />
+                            </>
+                        )}
+                    </button>
+
+                    {!isCollapsed && isImportExportOpen && (
+                        <div className="mt-1 ml-3 pl-3 border-l border-white/5 space-y-0.5">
+                            {importExportItems.map((item) => {
+                                const Icon = item.icon;
+                                return (
+                                    <button
+                                        key={item.href}
+                                        onClick={() => navigate(item.href)}
+                                        className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg text-xs transition-all duration-200 cursor-pointer ${isActive(item.href)
+                                            ? 'bg-indigo-500/15 text-indigo-300 border border-indigo-500/20'
+                                            : 'text-neutral-500 hover:text-neutral-300 hover:bg-white/5 border border-transparent'
+                                            }`}
+                                    >
+                                        <Icon className="w-3.5 h-3.5 shrink-0" />
+                                        <span className="truncate">{item.label}</span>
+                                    </button>
+                                );
+                            })}
+                        </div>
+                    )}
+                </div>
             </nav>
 
             {/* Collapse Toggle */}

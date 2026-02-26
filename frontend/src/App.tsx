@@ -20,6 +20,10 @@ import StatusKaryawanPage from '@/pages/hr/master/StatusKaryawanPage';
 import KaryawanListPage from '@/pages/hr/karyawan/KaryawanListPage';
 import KaryawanDetailPage from '@/pages/hr/karyawan/KaryawanDetailPage';
 
+// Import/Export Pages
+import ImportPage from '@/pages/hr/import-export/ImportPage';
+import ExportPage from '@/pages/hr/import-export/ExportPage';
+
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const token = authService.getToken();
 
@@ -126,6 +130,21 @@ function HRKaryawanLayout() {
   );
 }
 
+function HRImportExportLayout() {
+  const { pathname } = window.location;
+  const breadcrumbs = [
+    { label: 'HR', href: '/' },
+    { label: 'Import / Export', href: '/hr/import-export' },
+    { label: pathname.includes('/import') ? 'Import' : 'Export' },
+  ];
+
+  return (
+    <HRLayout breadcrumbs={breadcrumbs}>
+      <Outlet />
+    </HRLayout>
+  );
+}
+
 function App() {
   return (
     <Routes>
@@ -166,6 +185,12 @@ function App() {
           <Route index element={<KaryawanListPage />} />
           <Route path="baru" element={<KaryawanDetailPage />} />
           <Route path=":id" element={<KaryawanDetailPage />} />
+        </Route>
+
+        <Route path="import-export" element={<HRImportExportLayout />}>
+          <Route index element={<Navigate to="/hr/import-export/import" replace />} />
+          <Route path="import" element={<ImportPage />} />
+          <Route path="export" element={<ExportPage />} />
         </Route>
       </Route>
 
