@@ -21,9 +21,14 @@ api.interceptors.response.use(
     (response) => response,
     (error) => {
         if (error.response?.status === 401) {
-            localStorage.removeItem('bis_token');
-            localStorage.removeItem('bis_user');
-            window.location.href = '/login';
+            // Jangan redirect jika request yang gagal adalah login,
+            // agar pesan error dari server bisa ditampilkan di LoginPage
+            const isLoginRequest = error.config?.url?.includes('/api/auth/login');
+            if (!isLoginRequest) {
+                localStorage.removeItem('bis_token');
+                localStorage.removeItem('bis_user');
+                window.location.href = '/login';
+            }
         }
         return Promise.reject(error);
     }
