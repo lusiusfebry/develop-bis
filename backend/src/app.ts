@@ -12,7 +12,9 @@ if (!process.env.JWT_SECRET) {
 
 import express, { Request, Response, NextFunction } from 'express';
 import cors from 'cors';
+import path from 'path';
 import authRoutes from './modules/auth/auth.routes';
+import hrRoutes from './modules/hr/routes/hr.routes';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -21,6 +23,7 @@ const PORT = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 
 // ── Route Placeholder ──────────────────────────────────────────────
 app.get('/api/health', (_req: Request, res: Response) => {
@@ -29,6 +32,9 @@ app.get('/api/health', (_req: Request, res: Response) => {
 
 // ── Auth Routes ────────────────────────────────────────────────────
 app.use('/api/auth', authRoutes);
+
+// ── HR Routes ──────────────────────────────────────────────────────
+app.use('/api/hr', hrRoutes);
 
 // ── Global Error Handler ───────────────────────────────────────────
 interface AppError extends Error {
