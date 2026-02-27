@@ -1,6 +1,7 @@
 import { useState, useEffect, type ReactNode } from 'react';
 import { Search, Pencil, ToggleLeft, ToggleRight, ChevronLeft, ChevronRight, ChevronUp, ChevronDown, ChevronsUpDown, Inbox } from 'lucide-react';
 import type { MasterStatus, SortOrder } from '@/types/master.types';
+import { toast } from 'sonner';
 
 export interface ColumnDef {
     key: string;
@@ -112,7 +113,7 @@ export default function MasterDataTable({
                         <button
                             onClick={() => onEdit(row)}
                             title="Edit"
-                            className="p-2 rounded-lg text-neutral-400 hover:text-indigo-400 hover:bg-indigo-500/10 transition-all duration-200 cursor-pointer"
+                            className="p-2 rounded-lg text-muted-foreground hover:text-indigo-400 hover:bg-indigo-500/10 transition-all duration-200 cursor-pointer"
                         >
                             <Pencil className="w-3.5 h-3.5" />
                         </button>
@@ -122,9 +123,16 @@ export default function MasterDataTable({
                                     status === 'Aktif'
                                         ? 'Apakah Anda yakin ingin menonaktifkan data ini?'
                                         : 'Apakah Anda yakin ingin mengaktifkan data ini?';
-                                if (window.confirm(pesan)) {
-                                    onToggleStatus(row);
-                                }
+
+                                toast(pesan, {
+                                    action: {
+                                        label: 'Ya, Lanjutkan',
+                                        onClick: () => {
+                                            onToggleStatus(row);
+                                            toast.success(`Data berhasil di${status === 'Aktif' ? 'nonaktifkan' : 'aktifkan'}`);
+                                        },
+                                    }
+                                });
                             }}
                             title={status === 'Aktif' ? 'Nonaktifkan' : 'Aktifkan'}
                             className={`p-2 rounded-lg transition-all duration-200 cursor-pointer ${status === 'Aktif'
@@ -133,9 +141,9 @@ export default function MasterDataTable({
                                 }`}
                         >
                             {status === 'Aktif' ? (
-                                <ToggleRight className="w-4 h-4" />
+                                <ToggleRight className="w-5 h-5" />
                             ) : (
-                                <ToggleLeft className="w-4 h-4" />
+                                <ToggleLeft className="w-5 h-5" />
                             )}
                         </button>
                     </div>
@@ -150,13 +158,13 @@ export default function MasterDataTable({
             <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
                 {/* Search */}
                 <div className="relative flex-1 w-full sm:max-w-xs">
-                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-500" />
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground/80" />
                     <input
                         type="text"
                         placeholder="Cari data..."
                         value={localSearch}
                         onChange={(e) => setLocalSearch(e.target.value)}
-                        className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-sm text-white placeholder:text-neutral-500 focus:outline-none focus:border-indigo-500/50 focus:ring-1 focus:ring-indigo-500/25 transition-all duration-200"
+                        className="w-full pl-10 pr-4 py-2.5 rounded-2xl bg-card/50 border border-border/50 text-sm text-foreground placeholder:text-muted-foreground/80 focus:outline-none focus:border-border/80 focus:ring-1 focus:ring-ring/50 transition-all duration-300 hover:border-border hover:bg-accent/50"
                     />
                 </div>
 
@@ -164,7 +172,7 @@ export default function MasterDataTable({
                 <select
                     value={statusFilter}
                     onChange={(e) => onStatusFilterChange(e.target.value as MasterStatus | '')}
-                    className="px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-sm text-white focus:outline-none focus:border-indigo-500/50 transition-all duration-200 cursor-pointer"
+                    className="px-4 py-2.5 rounded-2xl bg-card/50 border border-border/50 text-sm text-foreground focus:outline-none focus:border-border/80 focus:ring-1 focus:ring-ring/50 transition-all duration-300 hover:border-border hover:bg-accent/50 cursor-pointer"
                 >
                     <option value="" className="bg-[#0a0a0f]">Semua Status</option>
                     <option value="Aktif" className="bg-[#0a0a0f]">Aktif</option>
@@ -173,11 +181,11 @@ export default function MasterDataTable({
             </div>
 
             {/* Table */}
-            <div className="rounded-xl border border-white/5 overflow-hidden">
+            <div className="rounded-2xl border border-border/50 bg-black/20 backdrop-blur-xl shadow-xl overflow-hidden">
                 <div className="overflow-x-auto max-h-[65vh] overflow-y-auto">
                     <table className="w-full text-sm">
                         <thead className="sticky top-0 z-10">
-                            <tr className="bg-[#0a0a0f] backdrop-blur-sm border-b border-white/5">
+                            <tr className="bg-black/40 backdrop-blur-md border-b border-border/50">
                                 {allColumns.map((col) => {
                                     const isSortable = col.sortable !== false && !col.key.startsWith('_');
                                     const isActive = sortKey === col.key;
@@ -185,7 +193,7 @@ export default function MasterDataTable({
                                     return (
                                         <th
                                             key={col.key}
-                                            className={`px-4 py-3 text-left text-xs font-medium uppercase tracking-wider whitespace-nowrap ${isActive ? 'text-indigo-300' : 'text-neutral-400'
+                                            className={`px-4 py-3 text-left text-xs font-medium uppercase tracking-wider whitespace-nowrap ${isActive ? 'text-indigo-300' : 'text-muted-foreground'
                                                 }`}
                                         >
                                             {isSortable && onSortChange ? (
@@ -212,7 +220,7 @@ export default function MasterDataTable({
                                     <tr key={`skeleton-${rowIdx}`}>
                                         {allColumns.map((col) => (
                                             <td key={col.key} className="px-4 py-3">
-                                                <div className="h-4 w-24 rounded bg-white/5 animate-pulse" />
+                                                <div className="h-4 w-24 rounded bg-card/50 animate-pulse" />
                                             </td>
                                         ))}
                                     </tr>
@@ -222,10 +230,10 @@ export default function MasterDataTable({
                                 <tr>
                                     <td colSpan={allColumns.length} className="px-4 py-16 text-center">
                                         <div className="flex flex-col items-center gap-3">
-                                            <div className="w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center">
+                                            <div className="w-12 h-12 rounded-xl bg-card/50 flex items-center justify-center">
                                                 <Inbox className="w-6 h-6 text-neutral-600" />
                                             </div>
-                                            <p className="text-neutral-500 text-sm">Belum ada data</p>
+                                            <p className="text-muted-foreground/80 text-sm">Belum ada data</p>
                                         </div>
                                     </td>
                                 </tr>
@@ -237,7 +245,7 @@ export default function MasterDataTable({
                                         className="even:bg-white/[0.02] hover:bg-white/[0.04] transition-colors duration-150"
                                     >
                                         {allColumns.map((col) => (
-                                            <td key={col.key} className="px-4 py-3 text-neutral-300 whitespace-nowrap">
+                                            <td key={col.key} className="px-4 py-3 text-muted-foreground whitespace-nowrap">
                                                 {col.render ? col.render(row) : (row[col.key] as ReactNode) ?? '-'}
                                             </td>
                                         ))}
@@ -252,14 +260,14 @@ export default function MasterDataTable({
             {/* Pagination */}
             {!isLoading && total > 0 && (
                 <div className="flex items-center justify-between text-sm">
-                    <p className="text-neutral-500">
+                    <p className="text-muted-foreground/80">
                         Menampilkan {startRow}–{endRow} dari {total} data
                     </p>
                     <div className="flex items-center gap-2">
                         <button
                             onClick={() => onPageChange(page - 1)}
                             disabled={page <= 1}
-                            className="p-2 rounded-lg bg-white/5 border border-white/10 text-neutral-400 hover:text-white hover:bg-white/10 disabled:opacity-30 disabled:cursor-not-allowed transition-all duration-200 cursor-pointer"
+                            className="p-2 rounded-lg bg-card/50 border border-border/50 text-muted-foreground hover:text-foreground hover:bg-accent/50 disabled:opacity-30 disabled:cursor-not-allowed transition-all duration-200 cursor-pointer"
                         >
                             <ChevronLeft className="w-4 h-4" />
                         </button>
@@ -269,7 +277,7 @@ export default function MasterDataTable({
                         <button
                             onClick={() => onPageChange(page + 1)}
                             disabled={page >= totalPages}
-                            className="p-2 rounded-lg bg-white/5 border border-white/10 text-neutral-400 hover:text-white hover:bg-white/10 disabled:opacity-30 disabled:cursor-not-allowed transition-all duration-200 cursor-pointer"
+                            className="p-2 rounded-lg bg-card/50 border border-border/50 text-muted-foreground hover:text-foreground hover:bg-accent/50 disabled:opacity-30 disabled:cursor-not-allowed transition-all duration-200 cursor-pointer"
                         >
                             <ChevronRight className="w-4 h-4" />
                         </button>

@@ -42,8 +42,8 @@ export default function GolonganPage() {
         <div className="space-y-6">
             <div className="flex items-center justify-between">
                 <div>
-                    <h1 className="text-2xl font-bold text-white">Golongan</h1>
-                    <p className="text-sm text-neutral-500 mt-1">Kelola data master golongan</p>
+                    <h1 className="text-2xl font-bold text-foreground">Golongan</h1>
+                    <p className="text-sm text-muted-foreground/80 mt-1">Kelola data master golongan</p>
                 </div>
                 <button
                     onClick={handleCreate}

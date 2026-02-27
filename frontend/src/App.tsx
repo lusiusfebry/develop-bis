@@ -3,6 +3,8 @@ import { authService } from '@/services/auth.service';
 import LoginPage from '@/pages/auth/LoginPage';
 import WelcomePage from '@/pages/welcome/WelcomePage';
 import HRLayout from '@/components/shared/HRLayout';
+import { Toaster } from 'sonner';
+import { ThemeProvider } from '@/components/theme-provider';
 
 // Master Data Pages
 import DivisiPage from '@/pages/hr/master/DivisiPage';
@@ -147,55 +149,58 @@ function HRImportExportLayout() {
 
 function App() {
   return (
-    <Routes>
-      <Route path="/login" element={<LoginPage />} />
-      <Route
-        path="/"
-        element={
-          <ProtectedRoute>
-            <WelcomePage />
-          </ProtectedRoute>
-        }
-      />
+    <ThemeProvider defaultTheme="dark" storageKey="bis-theme-preference">
+      <Toaster richColors position="top-right" expand={true} />
+      <Routes>
+        <Route path="/login" element={<LoginPage />} />
+        <Route
+          path="/"
+          element={
+            <ProtectedRoute>
+              <WelcomePage />
+            </ProtectedRoute>
+          }
+        />
 
-      {/* HR Routes */}
-      <Route
-        path="/hr/*"
-        element={
-          <ProtectedRoute>
-            <Outlet />
-          </ProtectedRoute>
-        }
-      >
-        <Route path="master" element={<HRMasterLayout />}>
-          <Route index element={<Navigate to="/hr/master/divisi" replace />} />
-          <Route path="divisi" element={<DivisiPage />} />
-          <Route path="department" element={<DepartmentPage />} />
-          <Route path="posisi-jabatan" element={<PosisiJabatanPage />} />
-          <Route path="kategori-pangkat" element={<KategoriPangkatPage />} />
-          <Route path="golongan" element={<GolonganPage />} />
-          <Route path="sub-golongan" element={<SubGolonganPage />} />
-          <Route path="jenis-hubungan-kerja" element={<JenisHubunganKerjaPage />} />
-          <Route path="tag" element={<TagPage />} />
-          <Route path="lokasi-kerja" element={<LokasiKerjaPage />} />
-          <Route path="status-karyawan" element={<StatusKaryawanPage />} />
+        {/* HR Routes */}
+        <Route
+          path="/hr/*"
+          element={
+            <ProtectedRoute>
+              <Outlet />
+            </ProtectedRoute>
+          }
+        >
+          <Route path="master" element={<HRMasterLayout />}>
+            <Route index element={<Navigate to="/hr/master/divisi" replace />} />
+            <Route path="divisi" element={<DivisiPage />} />
+            <Route path="department" element={<DepartmentPage />} />
+            <Route path="posisi-jabatan" element={<PosisiJabatanPage />} />
+            <Route path="kategori-pangkat" element={<KategoriPangkatPage />} />
+            <Route path="golongan" element={<GolonganPage />} />
+            <Route path="sub-golongan" element={<SubGolonganPage />} />
+            <Route path="jenis-hubungan-kerja" element={<JenisHubunganKerjaPage />} />
+            <Route path="tag" element={<TagPage />} />
+            <Route path="lokasi-kerja" element={<LokasiKerjaPage />} />
+            <Route path="status-karyawan" element={<StatusKaryawanPage />} />
+          </Route>
+
+          <Route path="karyawan" element={<HRKaryawanLayout />}>
+            <Route index element={<KaryawanListPage />} />
+            <Route path="baru" element={<KaryawanDetailPage />} />
+            <Route path=":id" element={<KaryawanDetailPage />} />
+          </Route>
+
+          <Route path="import-export" element={<HRImportExportLayout />}>
+            <Route index element={<Navigate to="/hr/import-export/import" replace />} />
+            <Route path="import" element={<ImportPage />} />
+            <Route path="export" element={<ExportPage />} />
+          </Route>
         </Route>
 
-        <Route path="karyawan" element={<HRKaryawanLayout />}>
-          <Route index element={<KaryawanListPage />} />
-          <Route path="baru" element={<KaryawanDetailPage />} />
-          <Route path=":id" element={<KaryawanDetailPage />} />
-        </Route>
-
-        <Route path="import-export" element={<HRImportExportLayout />}>
-          <Route index element={<Navigate to="/hr/import-export/import" replace />} />
-          <Route path="import" element={<ImportPage />} />
-          <Route path="export" element={<ExportPage />} />
-        </Route>
-      </Route>
-
-      <Route path="*" element={<Navigate to="/" replace />} />
-    </Routes>
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+    </ThemeProvider>
   );
 }
 

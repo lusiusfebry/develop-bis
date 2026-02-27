@@ -79,12 +79,12 @@ export default function KaryawanListPage() {
         <div className="space-y-6">
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                 <div>
-                    <h1 className="text-2xl font-bold text-white">Data Karyawan</h1>
-                    <p className="text-neutral-400 text-sm mt-1">Kelola data seluruh karyawan perusahaan</p>
+                    <h1 className="text-2xl font-bold text-foreground">Data Karyawan</h1>
+                    <p className="text-muted-foreground text-sm mt-1">Kelola data seluruh karyawan perusahaan</p>
                 </div>
                 <button
                     onClick={() => navigate('/hr/karyawan/baru')}
-                    className="flex items-center gap-2 px-4 py-2 bg-indigo-500 hover:bg-indigo-600 text-white rounded-xl text-sm font-medium transition-colors cursor-pointer"
+                    className="flex items-center gap-2 px-4 py-2.5 bg-accent/50 hover:bg-accent/80 border border-border/50 hover:border-border/80 text-foreground rounded-2xl text-sm font-medium transition-all duration-300 cursor-pointer shadow-sm active:scale-95"
                 >
                     <Plus className="w-4 h-4" />
                     Tambah Karyawan
@@ -96,13 +96,13 @@ export default function KaryawanListPage() {
                 <div className="flex flex-col sm:flex-row items-center gap-3">
                     {/* Search */}
                     <div className="relative flex-1 w-full sm:max-w-xs">
-                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-500" />
+                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground/80" />
                         <input
                             type="text"
                             placeholder="Cari nama atau NIK..."
                             value={localSearch}
                             onChange={(e) => setLocalSearch(e.target.value)}
-                            className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-sm text-white placeholder:text-neutral-500 focus:outline-none focus:border-indigo-500/50 focus:ring-1 focus:ring-indigo-500/25 transition-all duration-200"
+                            className="w-full pl-10 pr-4 py-2.5 rounded-2xl bg-card border border-border/50 text-sm text-white placeholder:text-muted-foreground/80 focus:outline-none focus:border-border/80 focus:ring-1 focus:ring-ring/50 transition-all duration-300 hover:border-border hover:bg-accent"
                         />
                     </div>
 
@@ -147,13 +147,13 @@ export default function KaryawanListPage() {
                 </div>
 
                 {/* Table */}
-                <div className="rounded-xl border border-white/5 overflow-hidden">
+                <div className="rounded-2xl border border-border/50 bg-black/20 backdrop-blur-xl shadow-xl overflow-hidden">
                     <div className="overflow-x-auto max-h-[65vh] overflow-y-auto">
                         <table className="w-full text-sm">
                             <thead className="sticky top-0 z-10">
-                                <tr className="bg-[#0a0a0f] backdrop-blur-sm border-b border-white/5">
+                                <tr className="bg-black/40 backdrop-blur-md border-b border-border/50">
                                     {columns.map((col) => (
-                                        <th key={col.key} className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-neutral-400 whitespace-nowrap">
+                                        <th key={col.key} className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-muted-foreground whitespace-nowrap">
                                             {col.label}
                                         </th>
                                     ))}
@@ -165,7 +165,7 @@ export default function KaryawanListPage() {
                                         <tr key={`skeleton-${rowIdx}`}>
                                             {columns.map((col) => (
                                                 <td key={col.key} className="px-4 py-3">
-                                                    <div className="h-4 w-24 rounded bg-white/5 animate-pulse" />
+                                                    <div className="h-4 w-24 rounded bg-card animate-pulse" />
                                                 </td>
                                             ))}
                                         </tr>
@@ -174,10 +174,10 @@ export default function KaryawanListPage() {
                                     <tr>
                                         <td colSpan={columns.length} className="px-4 py-16 text-center">
                                             <div className="flex flex-col items-center gap-3">
-                                                <div className="w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center">
+                                                <div className="w-12 h-12 rounded-xl bg-card flex items-center justify-center">
                                                     <Inbox className="w-6 h-6 text-neutral-600" />
                                                 </div>
-                                                <p className="text-neutral-500 text-sm">Belum ada karyawan yang sesuai</p>
+                                                <p className="text-muted-foreground/80 text-sm">Belum ada karyawan yang sesuai</p>
                                             </div>
                                         </td>
                                     </tr>
@@ -194,15 +194,15 @@ export default function KaryawanListPage() {
                                         lokasi_kerja: { nama_lokasi_kerja: string } | null;
                                     }, index: number) => (
                                         <tr key={row.id} className="even:bg-white/[0.02] hover:bg-white/[0.04] transition-colors duration-150">
-                                            <td className="px-4 py-3 text-neutral-300 whitespace-nowrap">
+                                            <td className="px-4 py-3 text-muted-foreground whitespace-nowrap">
                                                 {startRow + index}
                                             </td>
-                                            <td className="px-4 py-3 text-neutral-300 whitespace-nowrap">
+                                            <td className="px-4 py-3 text-muted-foreground whitespace-nowrap">
                                                 {row.foto_karyawan ? (
                                                     <img
                                                         src={row.foto_karyawan}
                                                         alt={row.nama_lengkap}
-                                                        className="w-8 h-8 rounded-full object-cover bg-white/10"
+                                                        className="w-8 h-8 rounded-full object-cover bg-accent/50"
                                                     />
                                                 ) : (
                                                     <div className="w-8 h-8 rounded-full bg-indigo-500/20 text-indigo-300 flex items-center justify-center">
@@ -210,24 +210,24 @@ export default function KaryawanListPage() {
                                                     </div>
                                                 )}
                                             </td>
-                                            <td className="px-4 py-3 text-neutral-300 whitespace-nowrap">{row.nama_lengkap}</td>
-                                            <td className="px-4 py-3 text-neutral-300 whitespace-nowrap">{row.nomor_induk_karyawan}</td>
-                                            <td className="px-4 py-3 text-neutral-300 whitespace-nowrap">{row.divisi?.nama_divisi || '-'}</td>
-                                            <td className="px-4 py-3 text-neutral-300 whitespace-nowrap">{row.department?.nama_department || '-'}</td>
-                                            <td className="px-4 py-3 text-neutral-300 whitespace-nowrap">{row.posisi_jabatan?.nama_posisi_jabatan || '-'}</td>
-                                            <td className="px-4 py-3 text-neutral-300 whitespace-nowrap">
+                                            <td className="px-4 py-3 text-muted-foreground whitespace-nowrap">{row.nama_lengkap}</td>
+                                            <td className="px-4 py-3 text-muted-foreground whitespace-nowrap">{row.nomor_induk_karyawan}</td>
+                                            <td className="px-4 py-3 text-muted-foreground whitespace-nowrap">{row.divisi?.nama_divisi || '-'}</td>
+                                            <td className="px-4 py-3 text-muted-foreground whitespace-nowrap">{row.department?.nama_department || '-'}</td>
+                                            <td className="px-4 py-3 text-muted-foreground whitespace-nowrap">{row.posisi_jabatan?.nama_posisi_jabatan || '-'}</td>
+                                            <td className="px-4 py-3 text-muted-foreground whitespace-nowrap">
                                                 {row.status_karyawan ? (
                                                     <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-indigo-500/15 text-indigo-300 border border-indigo-500/20">
                                                         {row.status_karyawan.nama_status}
                                                     </span>
                                                 ) : '-'}
                                             </td>
-                                            <td className="px-4 py-3 text-neutral-300 whitespace-nowrap">{row.lokasi_kerja?.nama_lokasi_kerja || '-'}</td>
-                                            <td className="px-4 py-3 text-neutral-300 whitespace-nowrap">
+                                            <td className="px-4 py-3 text-muted-foreground whitespace-nowrap">{row.lokasi_kerja?.nama_lokasi_kerja || '-'}</td>
+                                            <td className="px-4 py-3 text-muted-foreground whitespace-nowrap">
                                                 <button
                                                     onClick={() => navigate(`/hr/karyawan/${row.id}`)}
                                                     title="Lihat Detail"
-                                                    className="p-2 rounded-lg text-neutral-400 hover:text-indigo-400 hover:bg-indigo-500/10 transition-all duration-200 cursor-pointer"
+                                                    className="p-2 rounded-lg text-muted-foreground hover:text-indigo-400 hover:bg-indigo-500/10 transition-all duration-200 cursor-pointer"
                                                 >
                                                     <Eye className="w-4 h-4" />
                                                 </button>
@@ -243,14 +243,14 @@ export default function KaryawanListPage() {
                 {/* Pagination */}
                 {!isLoading && meta.total > 0 && (
                     <div className="flex items-center justify-between text-sm">
-                        <p className="text-neutral-500">
+                        <p className="text-muted-foreground/80">
                             Menampilkan {startRow}–{endRow} dari {meta.total} karyawan
                         </p>
                         <div className="flex items-center gap-2">
                             <button
                                 onClick={() => setPage(p => Math.max(1, p - 1))}
                                 disabled={meta.page <= 1}
-                                className="p-2 rounded-lg bg-white/5 border border-white/10 text-neutral-400 hover:text-white hover:bg-white/10 disabled:opacity-30 disabled:cursor-not-allowed transition-all duration-200 cursor-pointer"
+                                className="p-2 rounded-lg bg-card border border-border/50 text-muted-foreground hover:text-white hover:bg-accent disabled:opacity-30 disabled:cursor-not-allowed transition-all duration-200 cursor-pointer"
                             >
                                 <ChevronLeft className="w-4 h-4" />
                             </button>
@@ -260,7 +260,7 @@ export default function KaryawanListPage() {
                             <button
                                 onClick={() => setPage(p => Math.min(meta.totalPages, p + 1))}
                                 disabled={meta.page >= meta.totalPages}
-                                className="p-2 rounded-lg bg-white/5 border border-white/10 text-neutral-400 hover:text-white hover:bg-white/10 disabled:opacity-30 disabled:cursor-not-allowed transition-all duration-200 cursor-pointer"
+                                className="p-2 rounded-lg bg-card border border-border/50 text-muted-foreground hover:text-white hover:bg-accent disabled:opacity-30 disabled:cursor-not-allowed transition-all duration-200 cursor-pointer"
                             >
                                 <ChevronRight className="w-4 h-4" />
                             </button>

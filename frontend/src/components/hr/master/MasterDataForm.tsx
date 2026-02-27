@@ -7,6 +7,7 @@ import {
     DialogTitle,
 } from '@/components/ui/dialog';
 import type { FieldConfig } from '@/types/master.types';
+import { formatCapitalize } from '@/lib/utils';
 
 interface MasterDataFormProps {
     isOpen: boolean;
@@ -34,7 +35,9 @@ function FormContent({
 }) {
     const [formData, setFormData] = useState<Record<string, unknown>>(() => {
         if (initialData) return { ...initialData };
-        const defaults: Record<string, unknown> = {};
+        const defaults: Record<string, unknown> = {
+            status: 'Aktif'
+        };
         fields.forEach((f) => {
             defaults[f.name] = f.type === 'color' ? '#6366f1' : '';
         });
@@ -88,7 +91,7 @@ function FormContent({
     const borderClass = (name: string) =>
         errors[name]
             ? 'border-red-500/50 focus:border-red-500/50 focus:ring-red-500/25'
-            : 'border-white/10 focus:border-indigo-500/50 focus:ring-indigo-500/25';
+            : 'border-border/50 focus:border-indigo-500 focus:ring-indigo-500/25';
 
     return (
         <form onSubmit={handleSubmit} className="space-y-5 mt-2">
@@ -101,17 +104,17 @@ function FormContent({
                                 type="text"
                                 id={`field-${field.name}`}
                                 value={(formData[field.name] as string) ?? ''}
-                                onChange={(e) => handleChange(field.name, e.target.value)}
+                                onChange={(e) => handleChange(field.name, formatCapitalize(e.target.value))}
                                 onFocus={() => handleFocus(field.name)}
                                 onBlur={() => handleBlur(field.name)}
                                 placeholder=" "
-                                className={`peer w-full px-4 pt-5 pb-2 rounded-xl bg-white/5 border text-sm text-white focus:outline-none focus:ring-1 transition-all duration-200 ${borderClass(field.name)}`}
+                                className={`peer w-full px-4 pt-5 pb-2 rounded-2xl bg-card/50 border text-sm text-foreground focus:outline-none focus:ring-1 transition-all duration-300 hover:border-border hover:bg-accent/50 ${borderClass(field.name)}`}
                             />
                             <label
                                 htmlFor={`field-${field.name}`}
                                 className={`absolute left-4 transition-all duration-200 pointer-events-none ${isFloating(field.name)
                                     ? 'top-1.5 text-[10px] font-medium text-indigo-400'
-                                    : 'top-1/2 -translate-y-1/2 text-sm text-neutral-500'
+                                    : 'top-1/2 -translate-y-1/2 text-sm text-muted-foreground/80'
                                     }`}
                             >
                                 {field.label}
@@ -126,18 +129,18 @@ function FormContent({
                             <textarea
                                 id={`field-${field.name}`}
                                 value={(formData[field.name] as string) ?? ''}
-                                onChange={(e) => handleChange(field.name, e.target.value)}
+                                onChange={(e) => handleChange(field.name, formatCapitalize(e.target.value))}
                                 onFocus={() => handleFocus(field.name)}
                                 onBlur={() => handleBlur(field.name)}
                                 rows={3}
                                 placeholder=" "
-                                className={`peer w-full px-4 pt-5 pb-2 rounded-xl bg-white/5 border text-sm text-white focus:outline-none focus:ring-1 transition-all duration-200 resize-none ${borderClass(field.name)}`}
+                                className={`peer w-full px-4 pt-5 pb-2 rounded-2xl bg-card/50 border text-sm text-foreground focus:outline-none focus:ring-1 transition-all duration-300 hover:border-border hover:bg-accent/50 resize-none ${borderClass(field.name)}`}
                             />
                             <label
                                 htmlFor={`field-${field.name}`}
                                 className={`absolute left-4 transition-all duration-200 pointer-events-none ${isFloating(field.name)
                                     ? 'top-1.5 text-[10px] font-medium text-indigo-400'
-                                    : 'top-3.5 text-sm text-neutral-500'
+                                    : 'top-3.5 text-sm text-muted-foreground/80'
                                     }`}
                             >
                                 {field.label}
@@ -149,7 +152,7 @@ function FormContent({
                     {/* Color picker — tetap konvensional */}
                     {field.type === 'color' && (
                         <div className="space-y-1.5">
-                            <label className="block text-sm font-medium text-neutral-400">
+                            <label className="block text-sm font-medium text-muted-foreground">
                                 {field.label}
                                 {field.required && <span className="text-red-400 ml-1">*</span>}
                             </label>
@@ -158,13 +161,13 @@ function FormContent({
                                     type="color"
                                     value={(formData[field.name] as string) ?? '#6366f1'}
                                     onChange={(e) => handleChange(field.name, e.target.value)}
-                                    className="w-10 h-10 rounded-lg border border-white/10 cursor-pointer bg-transparent"
+                                    className="w-10 h-10 rounded-lg border border-border/50 cursor-pointer bg-transparent"
                                 />
                                 <div
-                                    className="w-8 h-8 rounded-lg border border-white/10"
+                                    className="w-8 h-8 rounded-lg border border-border/50"
                                     style={{ backgroundColor: (formData[field.name] as string) ?? '#6366f1' }}
                                 />
-                                <span className="text-xs text-neutral-500 font-mono">
+                                <span className="text-xs text-muted-foreground/80 font-mono">
                                     {(formData[field.name] as string) ?? '#6366f1'}
                                 </span>
                             </div>
@@ -174,14 +177,14 @@ function FormContent({
                     {/* Select — tetap konvensional */}
                     {field.type === 'select' && (
                         <div className="space-y-1.5">
-                            <label className="block text-sm font-medium text-neutral-400">
+                            <label className="block text-sm font-medium text-muted-foreground">
                                 {field.label}
                                 {field.required && <span className="text-red-400 ml-1">*</span>}
                             </label>
                             <select
                                 value={(formData[field.name] as string) ?? ''}
                                 onChange={(e) => handleChange(field.name, e.target.value)}
-                                className={`w-full px-4 py-2.5 rounded-xl bg-white/5 border text-sm text-white focus:outline-none focus:ring-1 transition-all duration-200 cursor-pointer ${borderClass(field.name)}`}
+                                className={`w-full px-4 py-2.5 rounded-2xl bg-card/50 border text-sm text-foreground focus:outline-none focus:ring-1 transition-all duration-300 hover:border-border hover:bg-accent/50 cursor-pointer ${borderClass(field.name)}`}
                             >
                                 <option value="" className="bg-[#12121a]">
                                     Pilih {field.label.toLowerCase()}
@@ -201,13 +204,32 @@ function FormContent({
                 </div>
             ))}
 
+            {/* Status Field Dropdown */}
+            <div className="space-y-1.5 pt-2">
+                <label className="block text-sm font-medium text-muted-foreground">
+                    Status <span className="text-red-400 ml-1">*</span>
+                </label>
+                <select
+                    value={(formData['status'] as string) ?? 'Aktif'}
+                    onChange={(e) => handleChange('status', e.target.value)}
+                    className="w-full px-4 py-2.5 rounded-2xl bg-card/50 border border-border/50 text-sm text-foreground focus:outline-none focus:ring-1 focus:border-indigo-500 focus:ring-indigo-500/25 transition-all duration-300 hover:border-border hover:bg-accent/50 cursor-pointer"
+                >
+                    <option value="Aktif" className="bg-[#12121a]">
+                        Aktif
+                    </option>
+                    <option value="TidakAktif" className="bg-[#12121a]">
+                        Tidak Aktif
+                    </option>
+                </select>
+            </div>
+
             {/* Actions */}
-            <div className="flex items-center justify-end gap-3 pt-4 border-t border-white/5">
+            <div className="flex items-center justify-end gap-3 pt-4 border-t border-white/5 mt-4">
                 <button
                     type="button"
                     onClick={onClose}
                     disabled={isSubmitting}
-                    className="px-4 py-2.5 rounded-xl text-sm text-neutral-400 hover:text-white hover:bg-white/5 transition-all duration-200 cursor-pointer disabled:opacity-50"
+                    className="px-4 py-2.5 rounded-xl text-sm text-muted-foreground hover:text-foreground hover:bg-card/50 transition-all duration-200 cursor-pointer disabled:opacity-50"
                 >
                     Batal
                 </button>
@@ -246,9 +268,9 @@ export default function MasterDataForm({
 
     return (
         <Dialog open={isOpen} onOpenChange={handleOpenChange}>
-            <DialogContent className="bg-[#12121a] border border-white/10 text-white sm:max-w-md">
+            <DialogContent className="border-none text-foreground sm:max-w-md">
                 <DialogHeader>
-                    <DialogTitle className="text-lg font-semibold text-white">
+                    <DialogTitle className="text-lg font-semibold text-foreground">
                         {title}
                     </DialogTitle>
                 </DialogHeader>

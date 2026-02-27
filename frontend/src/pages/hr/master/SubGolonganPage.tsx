@@ -42,8 +42,8 @@ export default function SubGolonganPage() {
         <div className="space-y-6">
             <div className="flex items-center justify-between">
                 <div>
-                    <h1 className="text-2xl font-bold text-white">Sub Golongan</h1>
-                    <p className="text-sm text-neutral-500 mt-1">Kelola data master sub golongan</p>
+                    <h1 className="text-2xl font-bold text-foreground">Sub Golongan</h1>
+                    <p className="text-sm text-muted-foreground/80 mt-1">Kelola data master sub golongan</p>
                 </div>
                 <button
                     onClick={handleCreate}

@@ -48,23 +48,23 @@ export function Combobox({
                 <Popover.Trigger asChild>
                     <button
                         disabled={disabled}
-                        className={`flex w-full items-center justify-between rounded-xl border px-4 py-2.5 text-sm transition-all duration-200 outline-none
+                        className={`flex w-full items-center justify-between rounded-2xl border px-4 py-2.5 text-sm transition-all duration-300 outline-none hover:shadow-sm active:scale-[0.98]
               ${disabled
-                                ? "bg-white/5 border-white/5 text-neutral-500 cursor-not-allowed"
-                                : "bg-white/5 border-white/10 text-white hover:border-indigo-500/50 hover:bg-white/10 focus:border-indigo-500/50 focus:ring-1 focus:ring-indigo-500/25 cursor-pointer"
+                                ? "bg-card/50 border-white/5 text-muted-foreground/80 cursor-not-allowed"
+                                : "bg-card/50 border-border/50 text-white hover:border-border hover:bg-accent/50 focus:border-border/80 focus:ring-1 focus:ring-ring/50 cursor-pointer"
                             }
               ${className}
             `}
                     >
                         <span className="truncate flex-1 text-left">
-                            {selectedOption ? selectedOption.label : <span className="text-neutral-500">{placeholder}</span>}
+                            {selectedOption ? selectedOption.label : <span className="text-muted-foreground/80">{placeholder}</span>}
                         </span>
                         <div className="flex items-center gap-2">
                             {allowClear && selectedOption && !disabled && (
                                 <div
                                     role="button"
                                     tabIndex={0}
-                                    className="rounded hover:bg-white/10 p-0.5"
+                                    className="rounded hover:bg-accent/50 p-0.5"
                                     onClick={(e) => {
                                         e.stopPropagation();
                                         onChange("");
@@ -76,10 +76,10 @@ export function Combobox({
                                         }
                                     }}
                                 >
-                                    <X className="h-3.5 w-3.5 text-neutral-400" />
+                                    <X className="h-3.5 w-3.5 text-muted-foreground" />
                                 </div>
                             )}
-                            <ChevronDown className={`h-4 w-4 text-neutral-400 transition-transform ${open ? "rotate-180" : ""}`} />
+                            <ChevronDown className={`h-4 w-4 text-muted-foreground transition-transform ${open ? "rotate-180" : ""}`} />
                         </div>
                     </button>
                 </Popover.Trigger>
@@ -87,13 +87,13 @@ export function Combobox({
 
             <Popover.Content
                 align="start"
-                className="z-50 w-[var(--radix-popover-trigger-width)] rounded-xl border border-white/10 bg-[#0a0a0f] p-1 shadow-xl outline-none"
+                className="z-50 w-[var(--radix-popover-trigger-width)] rounded-2xl border border-border/50 bg-black/60 backdrop-blur-2xl p-1 shadow-2xl outline-none data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 duration-200"
                 sideOffset={4}
             >
                 <div className="flex items-center border-b border-white/5 px-3 py-2">
-                    <Search className="mr-2 h-4 w-4 shrink-0 text-neutral-500" />
+                    <Search className="mr-2 h-4 w-4 shrink-0 text-muted-foreground/80" />
                     <input
-                        className="flex h-10 w-full rounded-md bg-transparent text-sm text-white placeholder:text-neutral-500 outline-none"
+                        className="flex h-10 w-full rounded-md bg-transparent text-sm text-foreground placeholder:text-muted-foreground/80 outline-none"
                         placeholder={searchPlaceholder}
                         value={search}
                         onChange={(e) => setSearch(e.target.value)}
@@ -101,7 +101,7 @@ export function Combobox({
                 </div>
                 <div className="max-h-60 overflow-y-auto p-1">
                     {filteredOptions.length === 0 ? (
-                        <div className="py-6 text-center text-sm text-neutral-500">
+                        <div className="py-6 text-center text-sm text-muted-foreground/80">
                             Data tidak ditemukan.
                         </div>
                     ) : (
@@ -115,8 +115,8 @@ export function Combobox({
                                 }}
                                 className={`flex w-full items-center justify-between rounded-lg px-2 py-2 text-sm outline-none transition-colors cursor-pointer
                   ${option.value === value
-                                        ? "bg-indigo-500/15 text-indigo-300 font-medium"
-                                        : "text-neutral-300 hover:bg-white/5 hover:text-white"
+                                        ? "bg-accent text-foreground font-medium shadow-sm"
+                                        : "text-muted-foreground hover:bg-card/50 hover:text-foreground"
                                     }
                 `}
                             >

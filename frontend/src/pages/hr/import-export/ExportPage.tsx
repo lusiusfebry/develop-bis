@@ -5,6 +5,7 @@ import { importExportService } from '../../../services/import-export.service';
 import type { ExportQuery } from '../../../types/import-export.types';
 import type { Divisi, Department, StatusKaryawan, LokasiKerja } from '../../../types/master.types';
 import { divisiService, departmentService, statusKaryawanService, lokasiKerjaService } from '../../../services/master.service';
+import { toast } from 'sonner';
 
 export default function ExportPage() {
     const [query, setQuery] = useState<ExportQuery>({});
@@ -37,7 +38,7 @@ export default function ExportPage() {
             await importExportService.exportKaryawan(query);
         } catch (error) {
             console.error('Error exporting data:', error);
-            alert('Gagal mendownload data. Silakan coba lagi.');
+            toast.error('Gagal mendownload data. Silakan coba lagi.');
         } finally {
             setIsExporting(false);
         }
@@ -54,17 +55,17 @@ export default function ExportPage() {
     return (
         <div className="space-y-6 max-w-4xl mx-auto">
             <div className="flex justify-between items-center">
-                <h1 className="text-2xl font-bold text-white">Export Data Karyawan</h1>
+                <h1 className="text-2xl font-bold text-foreground">Export Data Karyawan</h1>
             </div>
 
-            <div className="bg-[#13131a] rounded-xl border border-white/5 overflow-hidden">
-                <div className="p-6 border-b border-white/5 bg-white/5">
+            <div className="glass-card overflow-hidden">
+                <div className="p-6 border-b border-white/5 bg-card">
                     <div className="flex items-start space-x-4">
                         <div className="p-3 bg-indigo-500/20 rounded-lg shrink-0">
                             <DownloadCloud className="w-6 h-6 text-indigo-400" />
                         </div>
                         <div>
-                            <h2 className="text-lg font-medium text-white mb-1">Download Format Excel</h2>
+                            <h2 className="text-lg font-medium text-foreground mb-1">Download Format Excel</h2>
                             <p className="text-gray-400 text-sm">
                                 Gunakan filter di bawah jika Anda hanya ingin mendownload sebagian data karyawan.
                                 Kosongkan semua filter untuk mendownload seluruh data karyawan Bintang Motor.
@@ -90,7 +91,7 @@ export default function ExportPage() {
                                 name="tanggal_mulai"
                                 value={query.tanggal_mulai || ''}
                                 onChange={handleChange}
-                                className="w-full bg-[#0a0a0f] border border-white/10 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-indigo-500 transition-colors cursor-pointer"
+                                className="w-full bg-card border border-border/50 rounded-2xl px-4 py-2.5 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500/40 focus:border-indigo-500/50 transition-all duration-300 hover:bg-accent cursor-pointer"
                             />
                         </div>
 
@@ -101,7 +102,7 @@ export default function ExportPage() {
                                 name="tanggal_selesai"
                                 value={query.tanggal_selesai || ''}
                                 onChange={handleChange}
-                                className="w-full bg-[#0a0a0f] border border-white/10 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-indigo-500 transition-colors cursor-pointer"
+                                className="w-full bg-card border border-border/50 rounded-2xl px-4 py-2.5 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500/40 focus:border-indigo-500/50 transition-all duration-300 hover:bg-accent cursor-pointer"
                             />
                         </div>
 
@@ -111,7 +112,7 @@ export default function ExportPage() {
                                 name="divisi_id"
                                 value={query.divisi_id || ''}
                                 onChange={handleChange}
-                                className="w-full bg-[#0a0a0f] border border-white/10 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-indigo-500 transition-colors"
+                                className="w-full bg-card border border-border/50 rounded-2xl px-4 py-2.5 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500/40 focus:border-indigo-500/50 transition-all duration-300 hover:bg-accent whitespace-normal break-words [&>option]:bg-popover [&>option]:text-foreground"
                             >
                                 <option value="">Semua Divisi</option>
                                 {divisiOptions.map((opt: Divisi) => (
@@ -128,7 +129,7 @@ export default function ExportPage() {
                                 name="department_id"
                                 value={query.department_id || ''}
                                 onChange={handleChange}
-                                className="w-full bg-[#0a0a0f] border border-white/10 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-indigo-500 transition-colors"
+                                className="w-full bg-card border border-border/50 rounded-2xl px-4 py-2.5 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500/40 focus:border-indigo-500/50 transition-all duration-300 hover:bg-accent whitespace-normal break-words [&>option]:bg-popover [&>option]:text-foreground"
                                 disabled={!!query.divisi_id && departmentOptions.filter((d: Department) => d.divisi_id === query.divisi_id).length === 0}
                             >
                                 <option value="">Semua Department</option>
@@ -148,7 +149,7 @@ export default function ExportPage() {
                                 name="status_karyawan_id"
                                 value={query.status_karyawan_id || ''}
                                 onChange={handleChange}
-                                className="w-full bg-[#0a0a0f] border border-white/10 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-indigo-500 transition-colors"
+                                className="w-full bg-card border border-border/50 rounded-2xl px-4 py-2.5 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500/40 focus:border-indigo-500/50 transition-all duration-300 hover:bg-accent whitespace-normal break-words [&>option]:bg-popover [&>option]:text-foreground"
                             >
                                 <option value="">Semua Status</option>
                                 {statusOptions.map((opt: StatusKaryawan) => (
@@ -165,7 +166,7 @@ export default function ExportPage() {
                                 name="lokasi_kerja_id"
                                 value={query.lokasi_kerja_id || ''}
                                 onChange={handleChange}
-                                className="w-full bg-[#0a0a0f] border border-white/10 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-indigo-500 transition-colors"
+                                className="w-full bg-card border border-border/50 rounded-2xl px-4 py-2.5 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500/40 focus:border-indigo-500/50 transition-all duration-300 hover:bg-accent whitespace-normal break-words [&>option]:bg-popover [&>option]:text-foreground"
                             >
                                 <option value="">Semua Lokasi</option>
                                 {lokasiOptions.map((opt: LokasiKerja) => (
@@ -181,11 +182,11 @@ export default function ExportPage() {
                         <button
                             onClick={handleExport}
                             disabled={isExporting}
-                            className="px-6 py-3 bg-indigo-500 hover:bg-indigo-600 disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-lg flex items-center space-x-2 font-medium transition-colors"
+                            className="px-6 py-3 bg-accent/50 border border-border/50 hover:bg-accent/80 hover:border-border/80 disabled:opacity-50 disabled:cursor-not-allowed text-foreground rounded-2xl flex items-center space-x-2 font-medium transition-all duration-300 shadow-sm active:scale-95 cursor-pointer"
                         >
                             {isExporting ? (
                                 <>
-                                    <div className="w-5 h-5 border-2 border-white/20 border-t-white rounded-full animate-spin"></div>
+                                    <div className="w-5 h-5 border-2 border-border border-t-white rounded-full animate-spin"></div>
                                     <span>Sedang Menyiapkan...</span>
                                 </>
                             ) : (

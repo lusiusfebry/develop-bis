@@ -42,8 +42,8 @@ export default function KategoriPangkatPage() {
         <div className="space-y-6">
             <div className="flex items-center justify-between">
                 <div>
-                    <h1 className="text-2xl font-bold text-white">Kategori Pangkat</h1>
-                    <p className="text-sm text-neutral-500 mt-1">Kelola data master kategori pangkat</p>
+                    <h1 className="text-2xl font-bold text-foreground">Kategori Pangkat</h1>
+                    <p className="text-sm text-muted-foreground/80 mt-1">Kelola data master kategori pangkat</p>
                 </div>
                 <button
                     onClick={handleCreate}

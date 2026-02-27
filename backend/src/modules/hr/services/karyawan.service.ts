@@ -191,6 +191,27 @@ export async function createKaryawan(data: CreateKaryawanInput) {
     // Konversi field tanggal
     const convertedData = convertDateFields(karyawanData as Record<string, any>);
 
+    // Bersihkan object relational bawaan frontend (jika ada) agar tidak crash di Prisma
+    const relationsToStrip = [
+        'divisi', 'department', 'posisi_jabatan', 'status_karyawan',
+        'lokasi_kerja', 'lokasi_sebelumnya', 'tag', 'jenis_hubungan_kerja',
+        'kategori_pangkat', 'golongan_pangkat', 'sub_golongan_pangkat',
+        'manager', 'atasan_langsung', 'anak', 'saudara_kandung', 'user', 'karyawan',
+        'created_at', 'updated_at' // hapus metadata generated
+    ];
+
+    Object.keys(convertedData).forEach(key => {
+        // Hapus property berdasarkan map relation dan hapus juga jika tipe data berupa array/object (selain Date)
+        if (relationsToStrip.includes(key)) {
+            delete convertedData[key];
+        } else {
+            const val = convertedData[key];
+            if (typeof val === 'object' && val !== null && !(val instanceof Date)) {
+                delete convertedData[key];
+            }
+        }
+    });
+
     // Konversi tanggal di nested data anak
     const convertedAnak = (anak ?? []).map((a) => {
         const result: Record<string, any> = { ...a };
@@ -240,6 +261,27 @@ export async function updateKaryawan(id: string, data: UpdateKaryawanInput) {
 
     // Konversi field tanggal
     const convertedData = convertDateFields(karyawanData as Record<string, any>);
+
+    // Bersihkan object relational bawaan frontend (jika ada) agar tidak crash di Prisma
+    const relationsToStrip = [
+        'divisi', 'department', 'posisi_jabatan', 'status_karyawan',
+        'lokasi_kerja', 'lokasi_sebelumnya', 'tag', 'jenis_hubungan_kerja',
+        'kategori_pangkat', 'golongan_pangkat', 'sub_golongan_pangkat',
+        'manager', 'atasan_langsung', 'anak', 'saudara_kandung', 'user', 'karyawan',
+        'created_at', 'updated_at' // hapus metadata generated
+    ];
+
+    Object.keys(convertedData).forEach(key => {
+        // Hapus property berdasarkan map relation dan hapus juga jika tipe data berupa array/object (selain Date)
+        if (relationsToStrip.includes(key)) {
+            delete convertedData[key];
+        } else {
+            const val = convertedData[key];
+            if (typeof val === 'object' && val !== null && !(val instanceof Date)) {
+                delete convertedData[key];
+            }
+        }
+    });
 
     // Validasi jumlah saudara kandung
     if (saudara_kandung && saudara_kandung.length > 5) {

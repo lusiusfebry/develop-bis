@@ -9,6 +9,7 @@ import {
 } from 'lucide-react';
 import { Combobox } from '@/components/ui/combobox';
 import { karyawanService } from '@/services/karyawan.service';
+import { formatCapitalize } from '@/lib/utils';
 import {
     divisiService, departmentService, posisiJabatanService,
     jenisHubunganKerjaService, kategoriPangkatService, golonganService,
@@ -181,7 +182,7 @@ export default function KaryawanDetailPage() {
     };
 
     if (isEdit && isLoadingDetail) {
-        return <div className="p-8 text-center text-white">Loading detail...</div>;
+        return <div className="p-8 text-center text-muted-foreground">Loading detail...</div>;
     }
 
     return (
@@ -191,12 +192,12 @@ export default function KaryawanDetailPage() {
                 <div className="flex items-center gap-3">
                     <button
                         onClick={() => navigate('/hr/karyawan')}
-                        className="p-2 rounded-lg bg-white/5 border border-white/10 text-neutral-400 hover:text-white hover:bg-white/10 transition-colors cursor-pointer"
+                        className="p-2 rounded-xl bg-card border border-border/50 text-muted-foreground hover:text-white hover:bg-accent transition-all duration-300 cursor-pointer shadow-sm active:scale-95"
                     >
                         <ArrowLeft className="w-5 h-5" />
                     </button>
                     <div>
-                        <h1 className="text-2xl font-bold text-white">
+                        <h1 className="text-2xl font-bold text-foreground">
                             {isEdit ? 'Detail Karyawan' : 'Tambah Karyawan'}
                         </h1>
                     </div>
@@ -204,14 +205,14 @@ export default function KaryawanDetailPage() {
                 <div className="flex items-center gap-3">
                     <button
                         onClick={() => navigate('/hr/karyawan')}
-                        className="px-4 py-2 rounded-xl bg-white/5 border border-white/10 text-white hover:bg-white/10 transition-colors cursor-pointer text-sm font-medium"
+                        className="px-4 py-2 rounded-2xl bg-card border border-border/50 text-white hover:bg-accent transition-all duration-300 cursor-pointer text-sm font-medium shadow-sm active:scale-95"
                     >
                         Batal
                     </button>
                     <button
                         onClick={handleSave}
                         disabled={mutation.isPending}
-                        className="flex items-center gap-2 px-4 py-2 rounded-xl bg-indigo-500 hover:bg-indigo-600 text-white transition-colors cursor-pointer text-sm font-medium disabled:opacity-50"
+                        className="flex items-center gap-2 px-4 py-2 rounded-2xl bg-accent/50 hover:bg-accent/80 border border-border/50 hover:border-border/80 text-foreground transition-all duration-300 cursor-pointer text-sm font-medium shadow-sm active:scale-95 disabled:opacity-50"
                     >
                         <Save className="w-4 h-4" />
                         {mutation.isPending ? 'Menyimpan...' : 'Simpan Karyawan'}
@@ -227,11 +228,11 @@ export default function KaryawanDetailPage() {
             )}
 
             {/* Profile Head Section */}
-            <div className="p-6 rounded-2xl bg-[#0a0a0f] border border-white/10 flex flex-col md:flex-row gap-8">
+            <div className="p-6 rounded-2xl bg-background border border-border/50 flex flex-col md:flex-row gap-8">
                 {/* Photo & Upload */}
                 <div className="flex flex-col items-center gap-4 shrink-0">
                     <div className="relative group">
-                        <div className="w-32 h-32 rounded-2xl overflow-hidden bg-white/5 border-2 border-dashed border-white/20 flex items-center justify-center">
+                        <div className="w-32 h-32 rounded-2xl overflow-hidden bg-card border-2 border-dashed border-border flex items-center justify-center">
                             {fotoPreviewUrl ? (
                                 <img src={fotoPreviewUrl} alt="Preview" className="w-full h-full object-cover" />
                             ) : (
@@ -253,7 +254,7 @@ export default function KaryawanDetailPage() {
                         />
                     </div>
                     <div className="text-center">
-                        <p className="text-xs text-neutral-500 max-w-[140px]">Format JPG/PNG maks. 2MB</p>
+                        <p className="text-xs text-muted-foreground/80 max-w-[140px]">Format JPG/PNG maks. 2MB</p>
                     </div>
                 </div>
 
@@ -306,7 +307,7 @@ export default function KaryawanDetailPage() {
                 </div>
 
                 {/* QR Code */}
-                <div className="hidden lg:flex shrink-0 w-32 items-center justify-center border-l border-white/10 pl-8">
+                <div className="hidden lg:flex shrink-0 w-32 items-center justify-center border-l border-border/50 pl-8">
                     {formData.nomor_induk_karyawan ? (
                         <div className="p-3 bg-white rounded-xl">
                             <QRCode
@@ -316,19 +317,19 @@ export default function KaryawanDetailPage() {
                             />
                         </div>
                     ) : (
-                        <div className="w-24 h-24 rounded-xl bg-white/5 flex items-center justify-center border border-dashed border-white/10">
-                            <p className="text-[10px] text-neutral-500 text-center px-2">Isi NIK untuk melihat QR</p>
+                        <div className="w-24 h-24 rounded-xl bg-card flex items-center justify-center border border-dashed border-border/50">
+                            <p className="text-[10px] text-muted-foreground/80 text-center px-2">Isi NIK untuk melihat QR</p>
                         </div>
                     )}
                 </div>
             </div>
 
             {/* Detailed Info Tabs */}
-            <Tabs.Root value={activeTab} onValueChange={setActiveTab} className="bg-[#0a0a0f] rounded-2xl border border-white/10">
-                <Tabs.List className="flex border-b border-white/10 overflow-x-auto">
+            <Tabs.Root value={activeTab} onValueChange={setActiveTab} className="bg-background rounded-2xl border border-border/50">
+                <Tabs.List className="flex border-b border-border/50 overflow-x-auto">
                     <Tabs.Trigger
                         value="personal"
-                        className={`px-6 py-4 text-sm font-medium border-b-2 transition-colors whitespace-nowrap outline-none cursor-pointer ${activeTab === 'personal' ? 'border-indigo-500 text-indigo-400' : 'border-transparent text-neutral-400 hover:text-neutral-200'}`}
+                        className={`px-6 py-4 text-sm font-medium border-b-2 transition-colors whitespace-nowrap outline-none cursor-pointer ${activeTab === 'personal' ? 'border-indigo-500 text-indigo-400' : 'border-transparent text-muted-foreground hover:text-neutral-200'}`}
                     >
                         <div className="flex items-center gap-2">
                             <User className="w-4 h-4" /> Personal Information
@@ -336,7 +337,7 @@ export default function KaryawanDetailPage() {
                     </Tabs.Trigger>
                     <Tabs.Trigger
                         value="hr"
-                        className={`px-6 py-4 text-sm font-medium border-b-2 transition-colors whitespace-nowrap outline-none cursor-pointer ${activeTab === 'hr' ? 'border-indigo-500 text-indigo-400' : 'border-transparent text-neutral-400 hover:text-neutral-200'}`}
+                        className={`px-6 py-4 text-sm font-medium border-b-2 transition-colors whitespace-nowrap outline-none cursor-pointer ${activeTab === 'hr' ? 'border-indigo-500 text-indigo-400' : 'border-transparent text-muted-foreground hover:text-neutral-200'}`}
                     >
                         <div className="flex items-center gap-2">
                             <FileText className="w-4 h-4" /> Informasi HR
@@ -344,7 +345,7 @@ export default function KaryawanDetailPage() {
                     </Tabs.Trigger>
                     <Tabs.Trigger
                         value="keluarga"
-                        className={`px-6 py-4 text-sm font-medium border-b-2 transition-colors whitespace-nowrap outline-none cursor-pointer ${activeTab === 'keluarga' ? 'border-indigo-500 text-indigo-400' : 'border-transparent text-neutral-400 hover:text-neutral-200'}`}
+                        className={`px-6 py-4 text-sm font-medium border-b-2 transition-colors whitespace-nowrap outline-none cursor-pointer ${activeTab === 'keluarga' ? 'border-indigo-500 text-indigo-400' : 'border-transparent text-muted-foreground hover:text-neutral-200'}`}
                     >
                         <div className="flex items-center gap-2">
                             <Users className="w-4 h-4" /> Informasi Keluarga
@@ -534,14 +535,14 @@ export default function KaryawanDetailPage() {
 
                     <FormGroup title="5. Kontak Darurat">
                         <div className="md:col-span-2 space-y-4">
-                            <h4 className="font-semibold text-white">Kontak Darurat 1</h4>
+                            <h4 className="font-semibold text-foreground">Kontak Darurat 1</h4>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <TextInput label="Nama Kontak" value={formData.nama_kontak_darurat_1} onChange={(val) => handleChange('nama_kontak_darurat_1', val)} />
                                 <TextInput label="Hubungan" value={formData.hubungan_kontak_darurat_1} onChange={(val) => handleChange('hubungan_kontak_darurat_1', val)} />
                                 <TextInput label="No Telepon" value={formData.no_telepon_darurat_1} onChange={(val) => handleChange('no_telepon_darurat_1', val)} />
                                 <TextInput label="Keterangan" value={formData.keterangan_kontak_darurat_1} onChange={(val) => handleChange('keterangan_kontak_darurat_1', val)} />
                             </div>
-                            <h4 className="font-semibold text-white pt-4">Kontak Darurat 2</h4>
+                            <h4 className="font-semibold text-foreground pt-4">Kontak Darurat 2</h4>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <TextInput label="Nama Kontak" value={formData.nama_kontak_darurat_2} onChange={(val) => handleChange('nama_kontak_darurat_2', val)} />
                                 <TextInput label="Hubungan" value={formData.hubungan_kontak_darurat_2} onChange={(val) => handleChange('hubungan_kontak_darurat_2', val)} />
@@ -592,10 +593,10 @@ export default function KaryawanDetailPage() {
                     {/* Identitas Anak */}
                     {(formData.anak || []).length > 0 && (
                         <div className="space-y-4">
-                            <h3 className="text-lg font-semibold text-white border-b border-white/10 pb-2">2. Identitas Anak</h3>
+                            <h3 className="text-lg font-semibold text-foreground border-b border-border/50 pb-2">2. Identitas Anak</h3>
                             <div className="grid grid-cols-1 gap-4">
                                 {(formData.anak || []).map((anak, i) => (
-                                    <div key={i} className="p-4 rounded-xl border border-white/10 bg-white/[0.02]">
+                                    <div key={i} className="p-4 rounded-xl border border-border/50 bg-white/[0.02]">
                                         <h4 className="text-sm font-medium text-indigo-300 mb-3">Anak Ke-{i + 1}</h4>
                                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                             <TextInput
@@ -628,14 +629,14 @@ export default function KaryawanDetailPage() {
 
                     <FormGroup title="3. Orang Tua Kandung">
                         <div className="md:col-span-2 space-y-4">
-                            <h4 className="font-semibold text-white">Ayah Kandung</h4>
+                            <h4 className="font-semibold text-foreground">Ayah Kandung</h4>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <TextInput label="Nama Ayah" value={formData.nama_ayah_kandung} onChange={(val) => handleChange('nama_ayah_kandung', val)} />
                                 <DateInput label="Tanggal Lahir" value={formData.tanggal_lahir_ayah_kandung} onChange={(val) => handleChange('tanggal_lahir_ayah_kandung', val)} />
                                 <TextInput label="Pendidikan Terakhir" value={formData.pendidikan_terakhir_ayah} onChange={(val) => handleChange('pendidikan_terakhir_ayah', val)} />
                                 <TextInput label="Pekerjaan" value={formData.pekerjaan_ayah} onChange={(val) => handleChange('pekerjaan_ayah', val)} />
                             </div>
-                            <h4 className="font-semibold text-white pt-4">Ibu Kandung</h4>
+                            <h4 className="font-semibold text-foreground pt-4">Ibu Kandung</h4>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <TextInput label="Nama Ibu" value={formData.nama_ibu_kandung} onChange={(val) => handleChange('nama_ibu_kandung', val)} />
                                 <DateInput label="Tanggal Lahir" value={formData.tanggal_lahir_ibu_kandung} onChange={(val) => handleChange('tanggal_lahir_ibu_kandung', val)} />
@@ -647,8 +648,8 @@ export default function KaryawanDetailPage() {
 
                     {/* Saudara Kandung */}
                     <div className="space-y-4">
-                        <div className="flex items-center justify-between border-b border-white/10 pb-2">
-                            <h3 className="text-lg font-semibold text-white">4. Saudara Kandung</h3>
+                        <div className="flex items-center justify-between border-b border-border/50 pb-2">
+                            <h3 className="text-lg font-semibold text-foreground">4. Saudara Kandung</h3>
                             <button
                                 type="button"
                                 onClick={handleAddSaudara}
@@ -669,7 +670,7 @@ export default function KaryawanDetailPage() {
                         </div>
 
                         {(formData.saudara_kandung || []).map((saudara, i) => (
-                            <div key={i} className="p-4 rounded-xl border border-white/10 bg-white/[0.02] relative group">
+                            <div key={i} className="p-4 rounded-xl border border-border/50 bg-white/[0.02] relative group">
                                 <button
                                     onClick={() => handleRemoveSaudara(i)}
                                     className="absolute top-4 right-4 p-2 rounded-lg text-red-400 hover:bg-red-500/10 opacity-0 group-hover:opacity-100 transition-all duration-200 cursor-pointer"
@@ -716,14 +717,14 @@ export default function KaryawanDetailPage() {
 
                     <FormGroup title="5. Orang Tua Mertua">
                         <div className="md:col-span-2 space-y-4">
-                            <h4 className="font-semibold text-white">Ayah Mertua</h4>
+                            <h4 className="font-semibold text-foreground">Ayah Mertua</h4>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <TextInput label="Nama Ayah" value={formData.nama_ayah_mertua} onChange={(val) => handleChange('nama_ayah_mertua', val)} />
                                 <DateInput label="Tanggal Lahir" value={formData.tanggal_lahir_ayah_mertua} onChange={(val) => handleChange('tanggal_lahir_ayah_mertua', val)} />
                                 <TextInput label="Pendidikan Terakhir" value={formData.pendidikan_terakhir_ayah_mertua} onChange={(val) => handleChange('pendidikan_terakhir_ayah_mertua', val)} />
                                 <TextInput label="Pekerjaan" value={formData.pekerjaan_ayah_mertua} onChange={(val) => handleChange('pekerjaan_ayah_mertua', val)} />
                             </div>
-                            <h4 className="font-semibold text-white pt-4">Ibu Mertua</h4>
+                            <h4 className="font-semibold text-foreground pt-4">Ibu Mertua</h4>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <TextInput label="Nama Ibu" value={formData.nama_ibu_mertua} onChange={(val) => handleChange('nama_ibu_mertua', val)} />
                                 <DateInput label="Tanggal Lahir" value={formData.tanggal_lahir_ibu_mertua} onChange={(val) => handleChange('tanggal_lahir_ibu_mertua', val)} />
@@ -743,7 +744,7 @@ export default function KaryawanDetailPage() {
 function FormGroup({ title, children }: { title: string, children: React.ReactNode }) {
     return (
         <div className="space-y-4">
-            <h3 className="text-lg font-semibold text-white border-b border-white/10 pb-2">{title}</h3>
+            <h3 className="text-lg font-semibold text-foreground border-b border-border/50 pb-2">{title}</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {children}
             </div>
@@ -756,13 +757,19 @@ function TextInput({ label, value = '', onChange, placeholder, type = 'text' }: 
 }) {
     return (
         <div className="flex flex-col gap-1.5 focus-within:text-indigo-400">
-            <label className="text-xs font-medium text-neutral-400 transition-colors uppercase tracking-wider">{label}</label>
+            <label className="text-xs font-medium text-muted-foreground transition-colors uppercase tracking-wider">{label}</label>
             <input
                 type={type}
                 value={value || ''}
-                onChange={(e) => onChange(e.target.value)}
+                onChange={(e) => {
+                    if (type === 'text') {
+                        onChange(formatCapitalize(e.target.value));
+                    } else {
+                        onChange(e.target.value);
+                    }
+                }}
                 placeholder={placeholder}
-                className="w-full px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-sm text-white focus:outline-none focus:border-indigo-500/50 focus:ring-1 focus:ring-indigo-500/25 transition-all duration-200"
+                className="w-full px-4 py-2.5 rounded-2xl bg-card border border-border/50 text-sm text-foreground focus:outline-none focus:border-border/80 focus:ring-1 focus:ring-ring/50 transition-all duration-300 hover:bg-accent hover:border-border"
             />
         </div>
     );
@@ -773,12 +780,12 @@ function TextareaInput({ label, value = '', onChange, placeholder }: {
 }) {
     return (
         <div className="flex flex-col gap-1.5 focus-within:text-indigo-400">
-            <label className="text-xs font-medium text-neutral-400 transition-colors uppercase tracking-wider">{label}</label>
+            <label className="text-xs font-medium text-muted-foreground transition-colors uppercase tracking-wider">{label}</label>
             <textarea
                 value={value || ''}
-                onChange={(e) => onChange(e.target.value)}
+                onChange={(e) => onChange(formatCapitalize(e.target.value))}
                 placeholder={placeholder}
-                className="w-full px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-sm text-white focus:outline-none focus:border-indigo-500/50 focus:ring-1 focus:ring-indigo-500/25 transition-all duration-200 min-h-[100px] resize-y"
+                className="w-full px-4 py-2.5 rounded-2xl bg-card border border-border/50 text-sm text-foreground focus:outline-none focus:border-border/80 focus:ring-1 focus:ring-ring/50 transition-all duration-300 min-h-[100px] resize-y hover:bg-accent hover:border-border"
             />
         </div>
     );
@@ -792,12 +799,12 @@ function DateInput({ label, value = '', onChange }: {
 
     return (
         <div className="flex flex-col gap-1.5 focus-within:text-indigo-400">
-            <label className="text-xs font-medium text-neutral-400 transition-colors uppercase tracking-wider">{label}</label>
+            <label className="text-xs font-medium text-muted-foreground transition-colors uppercase tracking-wider">{label}</label>
             <input
                 type="date"
                 value={displayValue}
                 onChange={(e) => onChange(e.target.value ? new Date(e.target.value).toISOString() : '')}
-                className="w-full px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-sm focus:outline-none focus:border-indigo-500/50 focus:ring-1 focus:ring-indigo-500/25 transition-all duration-200 text-white"
+                className="w-full px-4 py-2.5 rounded-2xl bg-card border border-border/50 text-sm focus:outline-none focus:border-border/80 focus:ring-1 focus:ring-ring/50 transition-all duration-300 text-white hover:bg-accent hover:border-border"
             />
         </div>
     );
@@ -808,7 +815,7 @@ function ComboboxInput({ label, value = '', onChange, options, allowClear = fals
 }) {
     return (
         <div className="flex flex-col gap-1.5 focus-within:text-indigo-400">
-            <label className="text-xs font-medium text-neutral-400 transition-colors uppercase tracking-wider">{label}</label>
+            <label className="text-xs font-medium text-muted-foreground transition-colors uppercase tracking-wider">{label}</label>
             <Combobox
                 options={options}
                 value={value || ''}
@@ -822,8 +829,8 @@ function ComboboxInput({ label, value = '', onChange, options, allowClear = fals
 function ReadonlyField({ label, value }: { label: string; value: string | undefined | null }) {
     return (
         <div className="flex flex-col gap-1.5">
-            <label className="text-xs font-medium text-neutral-400 uppercase tracking-wider">{label}</label>
-            <div className="w-full px-4 py-2.5 rounded-xl bg-white/[0.02] border border-transparent text-sm text-neutral-500">
+            <label className="text-xs font-medium text-muted-foreground uppercase tracking-wider">{label}</label>
+            <div className="w-full px-4 py-2.5 rounded-2xl bg-white/[0.02] border border-white/5 text-sm text-muted-foreground">
                 {value || '-'}
             </div>
         </div>
